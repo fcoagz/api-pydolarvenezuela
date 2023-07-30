@@ -13,6 +13,10 @@ class Api(object):
                 return True
         return False
 
+    def getMonitor(self, key_monitor: str):
+        if self.verify_key(key_monitor):
+            return monitor.get_value_monitors(key_monitor)
+
     def getDollar(self, key_monitor: str):
         print(self.verify_key(key_monitor))
         if not self.verify_key(key_monitor):

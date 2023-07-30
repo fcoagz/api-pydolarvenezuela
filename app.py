@@ -7,6 +7,10 @@ app = Flask(__name__)
 def index():
     return "<p>Welcome to the Dolar Venezuela API. Go to documentation: https://github.com/fcoagz/api-pydolarvenezuela</p>"
 
+@app.route('/api/v1/dollar/unit/<string:key_monitor>', methods=["GET"])
+def params_heard_key(key_monitor: str):
+    return jsonify(Api().getMonitor(key_monitor))
+
 @app.route('/api/v1/dollar/<string:section_dollar>', methods=["GET"])
 def params_heard_section(section_dollar: str):
     return jsonify(Api().categorized(section_dollar))

@@ -3,6 +3,13 @@ from util import ranges, categories
 
 monitor = Monitor()
 
+def isfloat(value):
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
+
 class Api(object):
     def __init__(self) -> None:
         self.categorized_dict: dict = {}

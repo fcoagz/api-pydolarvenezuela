@@ -25,22 +25,13 @@ class Api(object):
         return result
 
     def getMonitor(self, key_monitor: str):
-        if not self.verify_key(key_monitor):
-            return {'error': f'Invalid key_monitor: {key_monitor}'}
-        try:
-            result = monitor.get_value_monitors(key_monitor)
-            return result
-        except Exception as e:
-            return {'error': f'An error occurred: {str(e)}'}
+        if self.verify_key(key_monitor):
+            return monitor.get_value_monitors(key_monitor)
 
     def getDollar(self, key_monitor: str):
         if not self.verify_key(key_monitor):
-            return {'error': f'Invalid key_monitor: {key_monitor}'}
-        try:
-            result = monitor.get_value_monitors(key_monitor, name_property='price')
-            return result
-        except Exception as e:
-            return {'error': f'An error occurred: {str(e)}'}
+            return {'message': f"Monitor with key {key_monitor} not found"}
+        return monitor.get_value_monitors(key_monitor, name_property = 'price')
         
     def categorized(self, section_dollar: str, key_monitor: str = None):
         for key, value in monitor.get_value_monitors().items():

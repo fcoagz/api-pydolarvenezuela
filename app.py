@@ -1,11 +1,17 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 from config_app import Api, isfloat
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def index():
     return "<p>Welcome to the Dolar Venezuela API. Go to documentation: https://github.com/fcoagz/api-pydolarvenezuela</p>"
+
+@app.route('/api/v1/dollar/', methods=["GET"])
+def params_heard_all():
+    return jsonify(Api().getAllDollar())
 
 @app.route('/api/v1/dollar/unit/<string:key_monitor>', methods=["GET"])
 def params_heard_key(key_monitor: str):

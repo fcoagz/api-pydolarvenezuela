@@ -7,6 +7,8 @@ https://pydolarvenezuela-api.vercel.app/
 ## Endpoints
 `GET /`: Muestra un mensaje de bienvenida y proporciona un enlace a la documentación de la API.
 
+`GET /api/v1/dollar/`: Permite obtener todas las entidades de seguimiento del dólar con su respectivo nombre, cambio y fecha de última actualización.
+
 `GET /api/v1/dollar/{section_dollar}`: Obtiene información sobre el precio del dólar en Venezuela en una sección específica.
 
 Parámetros:

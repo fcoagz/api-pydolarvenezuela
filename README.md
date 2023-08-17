@@ -39,4 +39,4 @@ Para obtener información sobre el precio del dólar en Venezuela en la sección
 https://pydolarvenezuela-api.vercel.app/api/v1/dollar/dolar_promedio
 ```
 
-La respuesta es objeto JSON que contiene la información solicitada.
+La respuesta será un objeto JSON que contiene la información solicitada.

@@ -49,5 +49,3 @@ def convertion_to_bs(value: str, key_monitor: str):
         return jsonify({'value_to_dollar': result, "information": api.get_monitor(key_monitor)})
     except ValueError:
         return jsonify({'message': f'Cannot GET information the value: {value}'})
-    
-app.run()

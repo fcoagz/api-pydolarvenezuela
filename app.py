@@ -1,12 +1,16 @@
-from flask import Flask
-from flask import jsonify
+from flask import Flask, jsonify 
 from flask_cors import CORS
 from src.obtaining import Api
+from src.exceptions import page_not_found, internal_server_error
 
 api = Api()
 
 app = Flask(__name__)
 CORS(app)
+
+# error handling
+app.register_error_handler(404, page_not_found)
+app.register_error_handler(500, internal_server_error)
 
 @app.route('/')
 def index():

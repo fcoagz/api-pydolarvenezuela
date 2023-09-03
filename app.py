@@ -30,7 +30,7 @@ def get_monitor_by_section(section_dollar: str):
 
 @app.route('/api/v1/dollar/<string:section_dollar>/<string:key_monitor>', methods=["GET"])
 def get_monitor_by_section_and_key(section_dollar: str, key_monitor: str):
-    return jsonify(Api().categorize_monitors(section_dollar, key_monitor))
+    return jsonify(api.categorize_monitors(section_dollar, key_monitor))
 
 @app.route('/api/v1/dollar/tb/<string:value>/<string:key_monitor>', methods=["GET"])
 def convertion_to_dollar(value: str, key_monitor: str):

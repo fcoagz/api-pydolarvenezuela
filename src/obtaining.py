@@ -32,7 +32,11 @@ class Api:
                 else self.categorized_dict[section_dollar])
     
     def get_all_monitors(self):
-        result = monitor.get_value_monitors()
+        monitors = monitor.get_value_monitors()
+        result = {
+            "datetime": monitors.pop("datetime"),
+            "monitors": monitors
+        }
         return result
     
     def get_dollar(self, key_monitor: str):

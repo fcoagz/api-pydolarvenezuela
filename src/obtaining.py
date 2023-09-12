@@ -1,9 +1,9 @@
 from pyDolarVenezuela import Monitor
-from src.variables import ranges, categories
+from src.variables import RANGES, CATEGORIES
 monitor = Monitor()
 
 def check_key(key: str) -> bool:
-    return key in ranges
+    return key in RANGES
 
 class Api:
     def __init__(self) -> None:
@@ -11,11 +11,13 @@ class Api:
 
     def categorize_monitors(self, section_dollar: str, key_monitor: str = None):
         for key, value in monitor.get_value_monitors().items():
-            category = 'fecha'
-            for i, values in enumerate(ranges):
+
+            for category, values in CATEGORIES.items():
                 if key in values:
-                    category = list(categories.keys())[list(categories.values()).index(i)]
                     break
+            else:
+                category = 'fecha'
+
             if category not in self.categorized_dict:
                 self.categorized_dict[category] = {}
             self.categorized_dict[category][key] = value

@@ -3,10 +3,7 @@ from src.variables import ranges, categories
 monitor = Monitor()
 
 def check_key(key: str) -> bool:
-    for x, i in enumerate(ranges):
-        if key in i:
-            return True
-    return False
+    return key in ranges
 
 class Api:
     def __init__(self) -> None:

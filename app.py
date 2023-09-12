@@ -38,10 +38,10 @@ def get_monitor_by_section_and_key(section_dollar: str, key_monitor: str):
 @app.route('/api/v1/dollar/tb/<string:value>/<string:key_monitor>', methods=["GET"])
 def convertion_to_dollar(value: str, key_monitor: str):
     try:
-        float(value)
+        value = float(value)
 
         price = api.get_dollar(key_monitor)
-        result = float(value) * float(price) if not type(price) == dict else price
+        result = value * float(price) if not type(price) == dict else price
         return jsonify({'value_to_bs': result, "information": api.get_monitor(key_monitor)})
     except ValueError:
         return jsonify({'message': f'Cannot GET information the value: {value}'})
@@ -49,10 +49,10 @@ def convertion_to_dollar(value: str, key_monitor: str):
 @app.route('/api/v1/dollar/td/<string:value>/<string:key_monitor>', methods=["GET"])
 def convertion_to_bs(value: str, key_monitor: str):
     try:
-        float(value)
+        value = float(value)
 
         price = api.get_dollar(key_monitor)
-        result = float(value) / float(price) if not type(price) == dict else price
+        result = value / float(price) if not type(price) == dict else price
         return jsonify({'value_to_dollar': result, "information": api.get_monitor(key_monitor)})
     except ValueError:
         return jsonify({'message': f'Cannot GET information the value: {value}'})

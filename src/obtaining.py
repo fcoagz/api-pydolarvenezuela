@@ -1,5 +1,7 @@
 from pyDolarVenezuela import Monitor
 from src.variables import RANGES, CATEGORIES
+from src.tools import get_error
+
 monitor = Monitor()
 
 def check_key(key: str) -> bool:
@@ -23,9 +25,9 @@ class Api:
             self.categorized_dict[category][key] = value
 
         if section_dollar not in self.categorized_dict:
-            return {'error': f'Invalid section_dollar: {section_dollar}'}
+            return get_error("section_dollar", section_dollar)
         if key_monitor is not None and key_monitor not in self.categorized_dict[section_dollar]:
-            return {'error': f'Invalid key_monitor: {key_monitor}'}
+            return get_error("key_monitor", key_monitor)
         
         return (self.categorized_dict[section_dollar][key_monitor] if key_monitor in self.categorized_dict[section_dollar]
                 else self.categorized_dict[section_dollar])
@@ -40,7 +42,7 @@ class Api:
     
     def get_dollar(self, key_monitor: str):
         if not check_key(key_monitor):
-            return {'error': f'Invalid key_monitor: {key_monitor}'}
+            return get_error("key_monitor", key_monitor)
         try:
             result = monitor.get_value_monitors(key_monitor, name_property='price')
             return result
@@ -49,7 +51,7 @@ class Api:
         
     def get_monitor(self, key_monitor: str):
         if not check_key(key_monitor):
-            return {'error': f'Invalid key_monitor: {key_monitor}'}
+            return get_error("key_monitor", key_monitor)
         try:
             result = monitor.get_value_monitors(key_monitor)
             return result

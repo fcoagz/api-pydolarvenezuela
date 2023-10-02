@@ -13,6 +13,15 @@ https://pydolarvenezuela-api.vercel.app/
 
 `GET /api/v1/dollar/`: Permite obtener todas las entidades de seguimiento del dólar con su respectivo nombre, cambio y fecha de última actualización.
 
+`GET /api/v1/dollar/{page_monitor}`: Le permite obtener información sobre el dólar en una página específica. Se encuentran: `bcv`, `criptodolar`, `exchangemonitor`, `ivenezuela`.
+
+`GET /api/v1/dollar/{page_monitor}/{key_monitor}`: Le permite obtener información sobre el dólar en un monitor específico.
+
+Parámetros:
+
+- `page_monitor` (requerido): una cadena que indica página a utilizar.
+- `key_monitor` (requerido): una cadena que indica el monitor específico.
+
 `GET /api/v1/dollar/td/{value}/{key_monitor}`: Convierte un valor en bolívares a su equivalente en dólares estadounidenses.
 
 `GET /api/v1/dollar/tb/{value}/{key_monitor}`: Convierte un valor en dólares estadounidenses a su equivalente en bolívares.

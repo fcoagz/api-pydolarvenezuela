@@ -73,6 +73,6 @@ class pyDolarVenezuelaApi:
         try:
             monitor = self.get_information_dollar(monitor_code=monitor_code)
 
-            return currency_converter(type, value, monitor)
+            return currency_converter(type, float(value), monitor)
         except Exception as e:
             return {'error': f'An error occurred: {str(e)}'}

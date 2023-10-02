@@ -52,7 +52,7 @@ class pyDolarVenezuelaApi:
                 if provider.name == "Exchange Monitor":
                     get_monitor = Monitor(provider)
                     monitor = get_monitor.get_value_monitors(monitor_code)
-                    
+
                     return monitor
                 if monitor_code in result['monitors']:
                     return result['monitors'][monitor_code]
@@ -71,7 +71,7 @@ class pyDolarVenezuelaApi:
     
     def get_price_converted(self, type: str, value, monitor_code: dict):
         try:
-            monitor = self.get_information_dollar(monitor_code)
+            monitor = self.get_information_dollar(monitor_code=monitor_code)
 
             return currency_converter(type, value, monitor)
         except Exception as e:

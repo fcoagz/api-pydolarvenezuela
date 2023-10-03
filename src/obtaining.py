@@ -1,4 +1,4 @@
-from pyDolarVenezuela.pages import BCV, CriptoDolar, ExchangeMonitor, iVenezuela
+from pyDolarVenezuela.pages import BCV, CriptoDolar, ExchangeMonitor, iVenezuela, Dpedidos
 from pyDolarVenezuela import currency_converter, getdate, pages 
 from pyDolarVenezuela import Monitor
 
@@ -6,7 +6,8 @@ provider_dict = {
         "criptodolar": CriptoDolar,
         "bcv": BCV,
         "exchangemonitor": ExchangeMonitor,
-        "ivenezuela": iVenezuela
+        "ivenezuela": iVenezuela,
+        "dpedidos": Dpedidos
 } 
 
 class pyDolarVenezuelaApi:

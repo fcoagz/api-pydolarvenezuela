@@ -29,12 +29,9 @@ class pyDolarVenezuelaApi:
     def get_specific_page_monitors(self, page: str):
         try:
             provider = provider_dict[page]
+            result = self.get_all_monitors(provider)
 
-            if provider.name == "Exchange Monitor":
-                return {'error': 'Utilice la ruta /exchangemonitor/<monitor>. No podemos ofrecerte todos los monitores en un solo lugar.'}
-            else:
-                result = self.get_all_monitors(provider)
-                return result
+            return result
         except Exception as e:
             return {'error': f'An error occurred: {str(e)}'}
         

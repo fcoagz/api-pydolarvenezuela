@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 from src.obtaining import pyDolarVenezuelaApi
@@ -28,14 +28,30 @@ def get_monitors():
     response = jsonify(api.get_all_monitors())
     return response
 
-@app.route('/api/v1/dollar/<string:page>', methods=["GET"])
-def get_monitor_by_page(page: str):
-    response = jsonify(api.get_specific_page_monitors(page))
+@app.route('/api/v1/dollar/page', methods=["GET"])
+def get_monitor_by_page_or_monitor():
+    page    = request.args.get('page', None)
+    monitor = request.args.get('monitor', None)
+
+    if not page:
+        return jsonify({'error': 'Por favor, proporciona el parametro: (page).'}), 400
+
+    if monitor:
+        response = jsonify(api.get_information_dollar(page, monitor))
+    else:
+        response = jsonify(api.get_specific_page_monitors(page))
     return response
 
-@app.route('/api/v1/dollar/<string:page>/<string:key_monitor>', methods=["GET"])
-def get_monitor_by_page_and_monitor(page: str, key_monitor: str):
-    response = jsonify(api.get_information_dollar(page, key_monitor))
+@app.route('/api/v1/dollar/conversion', methods=["GET"])
+def value_conversion():
+    type    = request.args.get('type', None)
+    value   = request.args.get('value', None)
+    monitor = request.args.get('monitor', None)
+
+    if not type or not value or not monitor:
+        return jsonify({'error': 'Por favor, proporciona los parametros: (type, value y monitor).'}), 400
+
+    response = jsonify(api.get_price_converted(type, value, monitor))
     return response
 
 @app.route('/api/v1/dollar/unit/<string:key_monitor>', methods=["GET"])
@@ -43,12 +59,7 @@ def get_by_monitor(key_monitor: str):
     response = jsonify(api.get_information_dollar(monitor_code=key_monitor))
     return response
 
-@app.route('/api/v1/dollar/tb/<string:value>/<string:key_monitor>', methods=["GET"])
-def convertion_to_dollar(value: str, key_monitor: str):
-    response = jsonify(api.get_price_converted('VES', value, key_monitor))
-    return response
-    
-@app.route('/api/v1/dollar/td/<string:value>/<string:key_monitor>', methods=["GET"])
-def convertion_to_bs(value: str, key_monitor: str):
-    response = jsonify(api.get_price_converted('USD', value, key_monitor))
+@app.route('/api/v1/dollar/history')
+def get_prices_history():
+    response = jsonify(api.get_price_history())
     return response

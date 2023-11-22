@@ -1,6 +1,6 @@
 # pyDolarVenezuela API
 
-La API de pyDolarVenezuela permite obtener información actualizada sobre el precio del dólar en Venezuela, así como realizar conversiones de bolívares a dólares y viceversa.
+La API de pyDolarVenezuela es una herramienta eficiente y confiable que brinda información en tiempo real sobre el valor del dólar y/o euro en Venezuela. Además, facilita la conversión precisa entre bolívares y estas monedas extranjeras.
 
 ## URL base
 
@@ -14,30 +14,33 @@ https://pydolarvenezuela-api.vercel.app/
 
 Este endpoint muestra un mensaje de bienvenida y proporciona un enlace a la documentación de la API.
 
-### `GET /api/v1/dollar/`
+### `GET /api/v1/<currency>/`
 
-Este endpoint permite obtener todas las entidades de seguimiento del dólar con su respectivo nombre, cambio y fecha de última actualización.
+Este endpoint permite obtener todas las entidades de seguimiento del dólar y/o euro, junto con su nombre correspondiente, cambio y fecha de la última actualización.
+
+Parámetro:
+- `currency`: La moneda en la que se expresarán los precios (`dollar`, `euro`).
 
 ### `GET /api/v1/dollar/history`
 
 Este endpoint te permite acceder al historial de los precios del dólar. Los datos se actualizan y se restablece semanalmente, este endpoint ofrece la posibilidad de consultar hasta 10 monitores diferentes para obtener una visión más completa del comportamiento del mercado.
 
-### `GET /api/v1/dollar/page`
+### `GET /api/v1/<currency>/page`
 
-Este endpoint permite obtener información sobre el dólar en una página específica. Las páginas disponibles son: `bcv`, `criptodolar`, `exchangemonitor`, `ivenezuela`, `dpedidos`.
+Este endpoint permite obtener información sobre el monitor en una página específica. Las páginas disponibles son: `bcv`, `criptodolar`, `exchangemonitor`, `ivenezuela`, `dpedidos`.
 
 | Parámetros | Tipo | Descripción |
 |------------|------|-------------|
 | page       | `string` | Indica el nombre de la página donde deseas obtener su valor. |
 | monitor    | `string` | _Opcional._ Indica el monitor específico. |
 
-### `GET /api/v1/dollar/conversion`
+### `GET /api/v1/<currency>/conversion`
 
-Este endpoint convierte un valor en bolívares a su equivalente en dólares estadounidenses y viceversa.
+Este endpoint convierte un valor en bolívares a su equivalente a estas monedas extranjeras y viceversa.
 
 | Parámetros | Tipo | Descripción |
 |------------|------|-------------|
-| type       | `string` | Indica el tipo de conversión. Puede ser `VES` o `USD`. |
+| type       | `string` | Indica el tipo de conversión. Puede ser `VES` o `USD` o `EUR`. |
 | value      | `float or integer` | Indica el valor a convertir. |
 | monitor    | `string` | Indica el monitor específico. |
 

@@ -14,29 +14,25 @@ https://pydolarvenezuela-api.vercel.app/
 
 Este endpoint muestra un mensaje de bienvenida y proporciona un enlace a la documentación de la API.
 
-### `GET /api/v1/<currency>/`
+### `GET /api/v1/<currency>`
 
-Este endpoint permite obtener todas las entidades de seguimiento del dólar y/o euro, junto con su nombre correspondiente, cambio y fecha de la última actualización.
+Este endpoint permite obtener todas las entidades de seguimiento del dólar y/o euro, junto con su nombre correspondiente, cambio y fecha de la última actualización. Ademas permite obtener información sobre el monitor en una página específica. Las páginas disponibles son: `bcv`, `criptodolar`, `exchangemonitor`, `ivenezuela`, `dpedidos`.
 
-Parámetro:
+Ruta:
 - `currency`: La moneda en la que se expresarán los precios (`dollar`, `euro`).
-
-### `GET /api/v1/dollar/history`
-
-Este endpoint te permite acceder al historial de los precios del dólar. Los datos se actualizan y se restablece semanalmente, este endpoint ofrece la posibilidad de consultar hasta 10 monitores diferentes para obtener una visión más completa del comportamiento del mercado.
-
-### `GET /api/v1/<currency>/page`
-
-Este endpoint permite obtener información sobre el monitor en una página específica. Las páginas disponibles son: `bcv`, `criptodolar`, `exchangemonitor`, `ivenezuela`, `dpedidos`.
 
 | Parámetros | Tipo | Descripción |
 |------------|------|-------------|
-| page       | `string` | Indica el nombre de la página donde deseas obtener su valor. |
+| page       | `string` | _Opcional._ Indica el nombre de la página donde deseas obtener su valor. |
 | monitor    | `string` | _Opcional._ Indica el monitor específico. |
+
 
 ### `GET /api/v1/<currency>/conversion`
 
 Este endpoint convierte un valor en bolívares a su equivalente a estas monedas extranjeras y viceversa.
+
+Ruta:
+- `currency`: La moneda en la que se expresarán los precios (`dollar`, `euro`).
 
 | Parámetros | Tipo | Descripción |
 |------------|------|-------------|
@@ -52,5 +48,5 @@ curl -X GET "https://pydolarvenezuela-api.vercel.app/api/v1/dollar/unit/enparale
 
 Para obtener información sobre el dólar en una página específica, puedes hacer una solicitud GET a la siguiente URL:
 ```sh
-curl -X GET "https://pydolarvenezuela-api.vercel.app/api/v1/dollar/page?page=bcv"
+curl -X GET "https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv"
 ```

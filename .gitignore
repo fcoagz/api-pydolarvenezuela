@@ -1,7 +1,2 @@
 .vercel
-__pycache__/app.cpython-38.pyc
-src/__pycache__/__init__.cpython-38.pyc
-src/__pycache__/exceptions.cpython-38.pyc
-src/__pycache__/obtaining.cpython-38.pyc
-src/__pycache__/tools.cpython-38.pyc
-src/__pycache__/variables.cpython-38.pyc
+__pycache__

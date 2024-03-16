@@ -2,9 +2,6 @@ from pyDolarVenezuela.pages import BCV, CriptoDolar, ExchangeMonitor, iVenezuela
 from pyDolarVenezuela.pages import Monitor as Page
 from pyDolarVenezuela import Monitor, currency_converter, getdate
 
-import requests
-import os
-
 class pyDolarVenezuelaApi:
     def __init__(self) -> None:
         self.provider_dict = {
@@ -70,14 +67,14 @@ class pyDolarVenezuelaApi:
         except Exception as e:
             return {'error': f'An error occurred: {str(e)}'}
     
-    def get_price_history(self):
-        storage = 'https://storage-pydolarvenezuela.vercel.app/dolarhistorial'
-        headers = {'SECRET_KEY': os.getenv('SECRET_KEY')}
+    # def get_price_history(self):
+    #     storage = 'https://storage-pydolarvenezuela.vercel.app/dolarhistorial'
+    #     headers = {'SECRET_KEY': os.getenv('SECRET_KEY')}
 
-        try:
-            response = requests.get(storage, headers=headers)
-            response.raise_for_status()
+    #     try:
+    #         response = requests.get(storage, headers=headers)
+    #         response.raise_for_status()
 
-            return response.json()
-        except Exception as e:
-            return {'error': f'An error occurred: {str(e)}'}
+    #         return response.json()
+    #     except Exception as e:
+    #         return {'error': f'An error occurred: {str(e)}'}

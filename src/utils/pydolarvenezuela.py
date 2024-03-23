@@ -2,20 +2,20 @@ from pyDolarVenezuela.pages import BCV, CriptoDolar, ExchangeMonitor, iVenezuela
 from pyDolarVenezuela.pages import Monitor as Page
 from pyDolarVenezuela import Monitor, currency_converter, getdate
 
-class pyDolarVenezuelaApi:
-    def __init__(self) -> None:
-        self.provider_dict = {
-            "criptodolar": CriptoDolar,
-            "bcv": BCV,
-            "exchangemonitor": ExchangeMonitor,
-            "ivenezuela": iVenezuela,
-            "dpedidos": Dpedidos
-        }
-        self.currency_dict = {
-            "dollar": "usd",
-            "euro": "eur"
-        }
-    
+class pyDolarVenezuelaApi:    
+    provider_dict = {
+        "criptodolar": CriptoDolar,
+        "bcv": BCV,
+        "exchangemonitor": ExchangeMonitor,
+        "ivenezuela": iVenezuela,
+        "dpedidos": Dpedidos
+    }
+
+    currency_dict = {
+        "dollar": "usd",
+        "euro": "eur"
+    }
+
     def get_all_monitors(self, currency: str, provider: Page = CriptoDolar):
         monitor = Monitor(provider=provider, currency=self.currency_dict.get(currency))
         monitors = monitor.get_value_monitors()
@@ -31,9 +31,10 @@ class pyDolarVenezuelaApi:
     def get_specific_page_monitors(self, page: str, currency: str):
         try:
             provider = self.provider_dict.get(page)
-            result = self.get_all_monitors(currency, provider)
+            if provider is None:
+                return {'error': f'No se encontró el proveedor {page}'}
 
-            return result
+            return self.get_all_monitors(currency, provider)
         except Exception as e:
             return {'error': f'An error occurred: {str(e)}'}
     
@@ -51,10 +52,10 @@ class pyDolarVenezuelaApi:
                 provider = self.provider_dict.get(page)
                 result = self.get_all_monitors(currency, provider)
 
-                if monitor_code in result['monitors']:
-                    return result['monitors'][monitor_code]
-                else:
+                if monitor_code not in result['monitors']:
                     return {'error': 'No se encontró el monitor al que quieres acceder'}
+
+                return result['monitors'][monitor_code]
             except Exception as e:
                 return {'error': f'An error occurred: {str(e)}'}
     
@@ -66,15 +67,3 @@ class pyDolarVenezuelaApi:
             return result
         except Exception as e:
             return {'error': f'An error occurred: {str(e)}'}
-    
-    # def get_price_history(self):
-    #     storage = 'https://storage-pydolarvenezuela.vercel.app/dolarhistorial'
-    #     headers = {'SECRET_KEY': os.getenv('SECRET_KEY')}
-
-    #     try:
-    #         response = requests.get(storage, headers=headers)
-    #         response.raise_for_status()
-
-    #         return response.json()
-    #     except Exception as e:
-    #         return {'error': f'An error occurred: {str(e)}'}

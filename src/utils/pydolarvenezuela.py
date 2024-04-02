@@ -1,6 +1,8 @@
 from pyDolarVenezuela.pages import BCV, CriptoDolar, ExchangeMonitor, iVenezuela, Dpedidos
 from pyDolarVenezuela.pages import Monitor as Page
-from pyDolarVenezuela import Monitor, currency_converter, getdate
+from pyDolarVenezuela import Monitor, CheckVersion, currency_converter, getdate
+
+CheckVersion.check = False
 
 class pyDolarVenezuelaApi:    
     provider_dict = {

@@ -1,4 +1,4 @@
-from pyDolarVenezuela.pages import BCV, CriptoDolar, ExchangeMonitor, iVenezuela, Dpedidos
+from pyDolarVenezuela.pages import BCV, CriptoDolar, ExchangeMonitor
 from pyDolarVenezuela.pages import Monitor as Page
 from pyDolarVenezuela import Monitor, CheckVersion, currency_converter, getdate
 

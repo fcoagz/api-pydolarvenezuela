@@ -8,9 +8,7 @@ class pyDolarVenezuelaApi:
     provider_dict = {
         "criptodolar": CriptoDolar,
         "bcv": BCV,
-        "exchangemonitor": ExchangeMonitor,
-        "ivenezuela": iVenezuela,
-        "dpedidos": Dpedidos
+        "exchangemonitor": ExchangeMonitor
     }
 
     currency_dict = {

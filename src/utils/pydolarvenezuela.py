@@ -24,14 +24,14 @@ class pyDolarVenezuelaApi:
         if not cache.get_data(key):
             monitor = Monitor(provider=provider, currency=self.currency_dict.get(currency))
             monitors = monitor.get_value_monitors()
-            datetime = getdate()
 
-            result = {
-                "datetime": datetime,
-                "monitors": monitors
-            }
-            cache.set_data(key, result)
-        return cache.get_data(key)
+            cache.set_data(key, monitors)
+        
+        result = {
+            "datetime": getdate(),
+            "monitors": cache.get_data(key)
+        }
+        return result
     
     def get_specific_page_monitors(self, page: str, currency: str):
         try:

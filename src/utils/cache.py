@@ -12,5 +12,3 @@ class Cache:
 
     def set_data(self, key: str, value: Any):
         self.cache[key] = value
-
-cache = Cache(maxsize=1024, timeout=300)

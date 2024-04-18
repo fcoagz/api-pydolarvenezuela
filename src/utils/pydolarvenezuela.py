@@ -1,8 +1,10 @@
 from pyDolarVenezuela.pages import BCV, CriptoDolar, ExchangeMonitor
 from pyDolarVenezuela.pages import Monitor as Page
 from pyDolarVenezuela import Monitor, CheckVersion, currency_converter, getdate
+from .cache import Cache
 
 CheckVersion.check = False
+cache = Cache(maxsize=1024, timeout=300)
 
 class pyDolarVenezuelaApi:    
     provider_dict = {
@@ -17,16 +19,19 @@ class pyDolarVenezuelaApi:
     }
 
     def get_all_monitors(self, currency: str, provider: Page = CriptoDolar):
-        monitor = Monitor(provider=provider, currency=self.currency_dict.get(currency))
-        monitors = monitor.get_value_monitors()
-        datetime = getdate()
+        key = f'{currency}:{provider.name}'
 
-        result = {
-            "datetime": datetime,
-            "monitors": monitors
-        }
+        if not cache.get_data(key):
+            monitor = Monitor(provider=provider, currency=self.currency_dict.get(currency))
+            monitors = monitor.get_value_monitors()
+            datetime = getdate()
 
-        return result
+            result = {
+                "datetime": datetime,
+                "monitors": monitors
+            }
+            cache.set_data(key, result)
+        return cache.get_data(key)
     
     def get_specific_page_monitors(self, page: str, currency: str):
         try:

@@ -50,3 +50,10 @@ Para obtener información sobre el dólar en una página específica, puedes hac
 ```sh
 curl -X GET "https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv"
 ```
+
+## Variables de entorno
+pyDolarVenezuela utiliza Redis Cloud, un motor de base de datos en memoria, para almacenar y procesar datos. 
+
+- `RADIS_HOST`
+- `RADIS_PORT`
+- `RADIS_PASSWORD`

@@ -1,10 +1,21 @@
+import os
 from pyDolarVenezuela.pages import BCV, CriptoDolar, ExchangeMonitor
 from pyDolarVenezuela.pages import Monitor as Page
-from pyDolarVenezuela import Monitor, CheckVersion, currency_converter, getdate
+from pyDolarVenezuela import Monitor, Redis, CheckVersion, currency_converter, getdate
 from .cache import Cache
 
 CheckVersion.check = False
+
+redis_host = os.getenv('REDIS_HOST')
+redis_port = os.getenv('REDIS_PORT')
+redis_password = os.getenv('REDIS_PASSWORD')
+
 cache = Cache(maxsize=1024, timeout=300)
+db = Redis(
+  host=redis_host,
+  port=redis_port,
+  password=redis_password
+)
 
 class pyDolarVenezuelaApi:    
     provider_dict = {
@@ -22,7 +33,7 @@ class pyDolarVenezuelaApi:
         key = f'{currency}:{provider.name}'
 
         if not cache.get_data(key):
-            monitor = Monitor(provider=provider, currency=self.currency_dict.get(currency))
+            monitor = Monitor(provider=provider, currency=self.currency_dict.get(currency), db=db)
             monitors = monitor.get_value_monitors()
 
             cache.set_data(key, monitors)

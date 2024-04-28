@@ -1,6 +1,6 @@
 import os
 from pyDolarVenezuela.pages import BCV, CriptoDolar, ExchangeMonitor
-from pyDolarVenezuela.pages import Monitor as Page
+from pyDolarVenezuela.pages import Page
 from pyDolarVenezuela import Monitor, Redis, CheckVersion, currency_converter, getdate
 from .cache import Cache
 

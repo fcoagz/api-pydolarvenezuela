@@ -1,5 +1,5 @@
 import os
-from pyDolarVenezuela.pages import BCV, CriptoDolar, ExchangeMonitor, Italcambio
+from pyDolarVenezuela.pages import AlCambio, BCV, CriptoDolar, ExchangeMonitor, Italcambio
 from pyDolarVenezuela.pages import Page
 from pyDolarVenezuela import Monitor, Redis, CheckVersion, currency_converter, getdate
 from .cache import Cache
@@ -22,7 +22,8 @@ class pyDolarVenezuelaApi:
         "criptodolar": CriptoDolar,
         "bcv": BCV,
         "exchangemonitor": ExchangeMonitor,
-        "italcambio": Italcambio
+        "italcambio": Italcambio,
+        "alcambio": AlCambio
     }
 
     currency_dict = {

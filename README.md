@@ -16,7 +16,7 @@ Este endpoint muestra un mensaje de bienvenida y proporciona un enlace a la docu
 
 ### `GET /api/v1/<currency>`
 
-Este endpoint permite obtener todas las entidades de seguimiento del dólar y/o euro, junto con su nombre correspondiente, cambio y fecha de la última actualización. Ademas permite obtener información sobre el monitor en una página específica. Las páginas disponibles son: `bcv`, `criptodolar`, `exchangemonitor`, `italcambio`.
+Este endpoint permite obtener todas las entidades de seguimiento del dólar y/o euro, junto con su nombre correspondiente, cambio y fecha de la última actualización. Ademas permite obtener información sobre el monitor en una página específica. Las páginas disponibles son: `alcambio`, `bcv`, `criptodolar`, `exchangemonitor`, `italcambio`.
 
 Ruta:
 - `currency`: La moneda en la que se expresarán los precios (`dollar`, `euro`).
@@ -54,6 +54,6 @@ curl -X GET "https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv"
 ## Variables de entorno
 pyDolarVenezuela utiliza Redis Cloud, un motor de base de datos en memoria, para almacenar y procesar datos. 
 
-- `RADIS_HOST`
-- `RADIS_PORT`
-- `RADIS_PASSWORD`
+- `REDIS_HOST`
+- `REDIS_PORT`
+- `REDIS_PASSWORD`

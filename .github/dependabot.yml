@@ -3,4 +3,8 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+    ignore:
+      - dependency-name: "*"
+    allow:
+      - dependency-name: "pydolarvenezuela"

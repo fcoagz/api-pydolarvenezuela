@@ -32,19 +32,22 @@ class pyDolarVenezuelaApi:
     }
 
     def get_all_monitors(self, currency: str, provider: Page = CriptoDolar):
-        key = f'{currency}:{provider.name}'
+        try:
+            key = f'{currency}:{provider.name}'
 
-        if not cache.get_data(key):
-            monitor = Monitor(provider=provider, currency=self.currency_dict.get(currency), db=db)
-            monitors = monitor.get_value_monitors()
+            if not cache.get_data(key):
+                monitor = Monitor(provider=provider, currency=self.currency_dict.get(currency), db=db)
+                monitors = monitor.get_value_monitors()
 
-            cache.set_data(key, monitors)
-        
-        result = {
-            "datetime": getdate(),
-            "monitors": cache.get_data(key)
-        }
-        return result
+                cache.set_data(key, monitors)
+            
+            result = {
+                "datetime": getdate(),
+                "monitors": cache.get_data(key)
+            }
+            return result
+        except Exception as e:
+            return {'error': f'An error occurred: {str(e)}'}
     
     def get_specific_page_monitors(self, page: str, currency: str):
         try:

@@ -11,8 +11,8 @@ from src.exceptions import (
 )
 
 app = Flask(__name__)
-swagger = Swagger(app, template_file='src/swagger.yaml')
 CORS(app)
+swagger = Swagger(app, template_file='src/swagger.yaml')
 
 # error handling
 app.register_error_handler(403, forbidden)

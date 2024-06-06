@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
+from flasgger import Swagger
 
 from src.routes import index, monitors
 from src.exceptions import (
@@ -10,6 +11,7 @@ from src.exceptions import (
 )
 
 app = Flask(__name__)
+swagger = Swagger(app, template_file='src/swagger.yaml')
 CORS(app)
 
 # error handling

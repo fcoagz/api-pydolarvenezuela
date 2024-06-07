@@ -19,8 +19,7 @@ def get_monitor_by_page_or_monitor(currency: str):
     if monitor:
         response = api.get_information_monitor(currency, page, monitor)
     else:
-        response = api.get_specific_page_monitors(page, currency)
-    
+        response = api.get_specific_page_monitors(page, currency)    
     return handle_response(response)
 
 @route.get('/api/v1/<string:currency>/unit/<string:key_monitor>')
@@ -37,5 +36,5 @@ def value_conversion(currency: str):
     if not type or not value or not monitor:
         return jsonify({'error': 'Por favor, proporciona los parametros: (type, value y monitor).'}), 400
 
-    response = jsonify(api.get_price_converted(currency, type, value, monitor)), 200
-    return response
+    response = api.get_price_converted(currency, type, value, monitor)
+    return handle_response(response)

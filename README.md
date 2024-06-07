@@ -2,6 +2,8 @@
 
 La API de pyDolarVenezuela es una herramienta eficiente y confiable que brinda información en tiempo real sobre el valor del dólar y/o euro en Venezuela. Además, facilita la conversión precisa entre bolívares y estas monedas extranjeras.
 
+Swagger API: https://pydolarvenezuela-api.vercel.app/apidocs
+
 ## URL base
 
 ```

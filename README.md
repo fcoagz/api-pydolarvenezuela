@@ -42,6 +42,10 @@ Ruta:
 | value      | `float or integer` | Indica el valor a convertir. |
 | monitor    | `string` | Indica el monitor específico. |
 
+## Actividad
+
+![Alt](https://repobeats.axiom.co/api/embed/7fc602e88410dfba302fe708f14e0e30d059a729.svg "Repobeats analytics image")
+
 ## Uso
 Para obtener información actualizada sobre el precio del dólar en Venezuela de `EnParaleloVzla`, puedes hacer una solicitud GET a la siguiente URL:
 ```sh
@@ -59,3 +63,9 @@ pyDolarVenezuela utiliza Redis Cloud, un motor de base de datos en memoria, para
 - `REDIS_HOST`
 - `REDIS_PORT`
 - `REDIS_PASSWORD`
+
+## Contributores
+
+<a href="https://github.com/fcoagz/api-pydolarvenezuela/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=fcoagz/api-pydolarvenezuela"/>
+</a>

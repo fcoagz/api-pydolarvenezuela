@@ -1,0 +1,1 @@
+Al contribuir en el repositorio, puede enviar correcciones abriendo un Pull y especificando la integración, eliminación o modificación de un archivo o código en el que contribuyó. Su contribución será revisada para garantizar que sea correcta.

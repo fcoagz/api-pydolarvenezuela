@@ -1,12 +1,12 @@
 from flask import Blueprint, request, jsonify
-from ..utils.pydolarvenezuela import pyDolarVenezuelaApi
+from ..service import pyDolarVenezuelaApi
 
 route = Blueprint('monitors', __name__)
 api   = pyDolarVenezuelaApi()
 
 def handle_response(response):
     """Maneja la respuesta del API."""
-    if response.get('error'):
+    if isinstance(response, dict) and response.get('error'):
         return jsonify(response), 400
     else:
         return jsonify(response), 200

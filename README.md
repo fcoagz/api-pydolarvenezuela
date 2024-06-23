@@ -58,11 +58,14 @@ curl -X GET "https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv"
 ```
 
 ## Variables de entorno
-pyDolarVenezuela utiliza Redis Cloud, un motor de base de datos en memoria, para almacenar y procesar datos. 
+pyDolarVenezuela utiliza SQLAlchemy para la integración de la base de datos Postgres. [Más información](https://github.com/fcoagz/pydolarvenezuela?tab=readme-ov-file#base-de-datos)
 
-- `REDIS_HOST`
-- `REDIS_PORT`
-- `REDIS_PASSWORD`
+- `SQL_MOTOR`
+- `SQL_HOST`
+- `SQL_DB_NAME`
+- `SQL_PORT`
+- `SQL_USER`
+- `SQL_PASSWORD`
 
 ## Contributores
 

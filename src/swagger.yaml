@@ -3,7 +3,7 @@ openapi: 3.0.0
 info:
   title: PyDolarVenezuela API
   description: Esta es la documentación de la API de pyDolarVenezuela donde sabrás cómo utilizar cada endpoint.
-  version: 1.6.8
+  version: 1.6.9
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html

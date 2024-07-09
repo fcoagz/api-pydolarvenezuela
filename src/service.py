@@ -2,7 +2,7 @@ from typing import Dict, Any
 from datetime import timedelta
 from pyDolarVenezuela import pages, Monitor, Database, CheckVersion, currency_converter, getdate
 from pyDolarVenezuela.storage import Cache
-from pyDolarVenezuela.models.pages import Page
+from pyDolarVenezuela.models import Page
 from .consts import (
     sql_motor,
     sql_host,

@@ -18,7 +18,7 @@ Este endpoint muestra un mensaje de bienvenida y proporciona un enlace a la docu
 
 ### `GET /api/v1/<currency>`
 
-Este endpoint permite obtener todas las entidades de seguimiento del dólar y/o euro, junto con su nombre correspondiente, cambio y fecha de la última actualización. Ademas permite obtener información sobre el monitor en una página específica. Las páginas disponibles son: `alcambio`, `bcv`, `criptodolar`, `dolartoday`, `exchangemonitor`, `italcambio`.
+Este endpoint permite obtener todas las entidades de seguimiento del dólar y/o euro, junto con su nombre correspondiente, cambio y fecha de la última actualización. Ademas permite obtener información sobre el monitor en una página específica. Las páginas disponibles son: `alcambio`, `bcv`, `criptodolar`, `dolartoday`, `exchangemonitor`, `enparalelovzla`, `italcambio`.
 
 Ruta:
 - `currency`: La moneda en la que se expresarán los precios (`dollar`, `euro`).

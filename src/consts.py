@@ -1,5 +1,5 @@
 import os
-from pyDolarVenezuela.pages import AlCambio, BCV, CriptoDolar, DolarToday, ExchangeMonitor, Italcambio
+from pyDolarVenezuela.pages import AlCambio, BCV, CriptoDolar, DolarToday, ExchangeMonitor, EnParaleloVzla, Italcambio
 
 sql_motor = os.getenv('SQL_MOTOR')
 sql_host = os.getenv('SQL_HOST')
@@ -14,7 +14,8 @@ provider_dict = {
     'exchangemonitor': ExchangeMonitor,
     'italcambio': Italcambio,
     'alcambio': AlCambio,
-    'dolartoday': DolarToday
+    'dolartoday': DolarToday,
+    'enparalelovzla': EnParaleloVzla
 }
 
 currency_dict = {

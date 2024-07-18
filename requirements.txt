@@ -1,5 +1,5 @@
 ﻿flask==3.0.3
 flask_cors==4.0.0
 flasgger==0.9.7.1
-pydolarvenezuela==1.7.9
+pydolarvenezuela==1.8.0
 cachetools==5.3.3

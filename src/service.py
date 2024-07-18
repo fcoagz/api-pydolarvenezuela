@@ -18,28 +18,24 @@ from .consts import (
 CheckVersion.check = False
 
 # Caching
-cache = Cache(ttl=timedelta(minutes=5))
+cache = Cache(ttl=timedelta(minutes=10))
 
 class pyDolarVenezuelaApi:
     def get_all_monitors(self, currency: str, provider: Page = pages.CriptoDolar):
         try:
             key = f'{provider.name}:{currency}'
-            
-            if not cache.get(key):
+            monitors_dict = cache.get(key)
+
+            if not monitors_dict:
                 monitor = Monitor(provider, currency_dict.get(currency.lower()), db=Database(
-                    motor=sql_motor,
-                    host=sql_host,
-                    database=sql_database_name,
-                    port=sql_port,
-                    user=sql_user,
-                    password=sql_password
+                    sql_motor, sql_host, sql_database_name, sql_port, sql_user, sql_password
                 ))
                 monitors_dict = {info.pop('key'): info for info in monitor.get_all_monitors()}
                 cache.set(key, monitors_dict)
             
             result = {
                 "datetime": getdate(),
-                "monitors": cache.get(key)
+                "monitors": monitors_dict
             }
             return result
         except Exception as e:

@@ -60,8 +60,7 @@ curl -X GET "https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv"
 ## Sponsors
 
 <a href="https://www.capasiete.com/" target="_blank" title="Capa7, proveedor de servicios web hosting, streaming y servidores, servicios rápidos, confiables, y seguros, 99.9% óptimo, soporte 24/7."><img src="https://github.com/fcoagz/api-pydolarvenezuela/blob/main/assets/sponsor/capasiete.jpg?raw=true" width="250" height="150"></a>
-<a href="https://criptomerkado.com/" target="_blank" title="Somos una plataforma para compra y venta de cripto monedas." ><img src="https://github.com/fcoagz/api-pydolarvenezuela/blob/main/assets/sponsor/criptomerkado.jpg?raw=true
-" width="250" height="150"></a>
+<a href="https://criptomerkado.com/" target="_blank" title="Somos una plataforma para compra y venta de cripto monedas." ><img src="https://github.com/fcoagz/api-pydolarvenezuela/blob/main/assets/sponsor/criptomerkado.jpg?raw=true" width="250" height="150"></a>
 
 ## Variables de entorno
 pyDolarVenezuela utiliza SQLAlchemy para la integración de la base de datos Postgres. [Más información](https://github.com/fcoagz/pydolarvenezuela?tab=readme-ov-file#base-de-datos)

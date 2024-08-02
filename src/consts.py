@@ -1,24 +1,24 @@
 import os
-from pyDolarVenezuela.pages import AlCambio, BCV, CriptoDolar, DolarToday, ExchangeMonitor, EnParaleloVzla, Italcambio
+from dotenv import load_dotenv
 
-sql_motor = os.getenv('SQL_MOTOR')
-sql_host = os.getenv('SQL_HOST')
-sql_database_name = os.getenv('SQL_DB_NAME')
-sql_port = os.getenv('SQL_PORT')
-sql_user = os.getenv('SQL_USER')
-sql_password = os.getenv('SQL_PASSWORD')
+load_dotenv()
 
-provider_dict = {
-    'criptodolar': CriptoDolar,
-    'bcv': BCV,
-    'exchangemonitor': ExchangeMonitor,
-    'italcambio': Italcambio,
-    'alcambio': AlCambio,
-    'dolartoday': DolarToday,
-    'enparalelovzla': EnParaleloVzla
-}
+SQL_MOTOR      = os.getenv('SQL_MOTOR')
+SQL_HOST       = os.getenv('SQL_HOST')
+SQL_DB_NAME    = os.getenv('SQL_DB_NAME')
+SQL_PORT       = os.getenv('SQL_PORT')
+SQL_USER       = os.getenv('SQL_USER')
+SQL_PASSWORD   = os.getenv('SQL_PASSWORD')
 
-currency_dict = {
-    'dollar': 'usd',
-    'euro': 'eur'
-}
+REDIS_HOST     = os.getenv('REDIS_HOST')
+REDIS_PORT     = os.getenv('REDIS_PORT')
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+REDIS_DB       = os.getenv('REDIS_DB', 0) # default 0
+
+TOKEN_SECRET   = os.getenv('TOKEN_SECRET')
+TIMEOUT        = os.getenv('TIMEOUT', 15) # in minutes
+
+GETLOGS        = os.getenv('GETLOGS', False)
+
+URL_DB  = f'{SQL_MOTOR}://{SQL_USER}:{SQL_PASSWORD}@{SQL_HOST}:{SQL_PORT}/{SQL_DB_NAME}'
+# URL_REDIS = f'redis://{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'

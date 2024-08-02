@@ -3,12 +3,12 @@ openapi: 3.0.0
 info:
   title: PyDolarVenezuela API
   description: Esta es la documentación de la API de pyDolarVenezuela donde sabrás cómo utilizar cada endpoint.
-  version: 1.8.1
+  version: 1.8.5
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: https://pydolarvenezuela-api.vercel.app
+  - url: http://pydolarve.org/
 tags:
   - name: GET
 
@@ -22,7 +22,7 @@ paths:
         - name: currency
           in: path
           required: true
-          description: La moneda en la que se expresarán los precios (dollar, euro).
+          description: La moneda en la que se expresarán los precios (dólar, euro).
           schema:
             type: string
         - name: page
@@ -50,35 +50,6 @@ paths:
           description: Error.
         404:
           description: No se pudo encontrar la página que estaba buscando.
-  /api/v1/{currency}/unit/{monitor}:
-    get:
-      tags:
-        - GET
-      summary: Obtiene información de un monitor específico en una página por defecto.
-      parameters:
-        - name: currency
-          in: path
-          required: true
-          description: La moneda en la que se expresarán los precios (dollar, euro).
-          schema:
-            type: string
-        - name: monitor
-          in: path
-          required: true
-          description: El monitor específico del que se quiere obtener la información.
-          schema:
-            type: string
-      responses:
-        200:
-          description: La información de los monitores de la página.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Monitor'
-        400:
-          description: Error.
-        404:
-          description: No se pudo encontrar el monitor que estaba buscando.
   /api/v1/{currency}/conversion:
     get:
       tags:
@@ -118,7 +89,106 @@ paths:
                 $ref: '#/components/schemas/Conversion'
         400:
           description: Error.
+  /api/v1/{currency}/history:
+    get:
+      tags:
+        - GET
+      summary: Obtiene el historial de precios de un monitor específico en una página.
+      parameters:
+        - name: currency
+          in: path
+          required: true
+          description: La moneda en la que se expresarán los precios (dólar, euro).
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: true
+          description: La página de la que se quiere obtener la información.
+          schema:
+            type: string
+        - name: monitor
+          in: query
+          required: true
+          description: El monitor específico del que se quiere obtener la información.
+          schema:
+            type: string
+        - name: start_date
+          in: query
+          required: true
+          description: Fecha de inicio del historial.
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          required: true
+          description: Fecha de fin del historial.
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: La información de los monitores de la página.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/History'
+        400:
+          description: Error.
+        404:
+          description: No se pudo encontrar la página que estaba buscando.
+  /api/v1/{currency}/changes:
+    get:
+      tags:
+        - GET
+      summary: Obtiene actualizaciones de precios realizadas en un día especifico de un monitor en una página.
+      parameters:
+        - name: currency
+          in: path
+          required: true
+          description: La moneda en la que se expresarán los precios (dólar, euro).
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: true
+          description: La página de la que se quiere obtener la información.
+          schema:
+            type: string
+        - name: monitor
+          in: query
+          required: true
+          description: El monitor específico del que se quiere obtener la información.
+          schema:
+            type: string
+        - name: date
+          in: query
+          required: true
+          description: Fecha de inicio del historial.
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: La información de los monitores de la página.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Changes'
+        400:
+          description: Error.
+        404:
+          description: No se pudo encontrar la página que estaba buscando.
+
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  
   schemas:
     AllMonitors:
       type: object
@@ -168,3 +238,35 @@ components:
     Conversion:
       type: number
       format: float
+
+    MonitorData:
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+        last_update:
+          type: string
+          format: date-time
+
+    History:
+      type: object
+      properties:
+        datetime:
+          type: string
+          format: date-time
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/MonitorData'
+    
+    Changes:
+      type: object
+      properties:
+        datetime:
+          type: string
+          format: date-time
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MonitorData'

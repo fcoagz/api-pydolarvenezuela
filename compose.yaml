@@ -8,6 +8,8 @@ services:
       - redis
     networks:
       - app-network
+    volumes:
+      - .:/app
   redis:
     image: "redis:alpine"
     container_name: redis

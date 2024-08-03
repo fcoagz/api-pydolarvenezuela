@@ -18,7 +18,10 @@ REDIS_DB       = os.getenv('REDIS_DB', 0) # default 0
 TOKEN_SECRET   = os.getenv('TOKEN_SECRET')
 TIMEOUT        = os.getenv('TIMEOUT', 15) # in minutes
 
-GETLOGS        = os.getenv('GETLOGS', False)
+if os.getenv('GETLOGS') == 'True':
+    GETLOGS = True
+else:
+    GETLOGS = False
 
 URL_DB  = f'{SQL_MOTOR}://{SQL_USER}:{SQL_PASSWORD}@{SQL_HOST}:{SQL_PORT}/{SQL_DB_NAME}'
 # URL_REDIS = f'redis://{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'

@@ -16,7 +16,7 @@ REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
 REDIS_DB       = os.getenv('REDIS_DB', 0) # default 0
 
 TOKEN_SECRET   = os.getenv('TOKEN_SECRET')
-TIMEOUT        = os.getenv('TIMEOUT', 15) # in minutes
+TIMEOUT        = int(os.getenv('TIMEOUT', 15)) # in minutes
 
 if os.getenv('GETLOGS') == 'True':
     GETLOGS = True

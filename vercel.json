@@ -9,5 +9,10 @@
     {
         "src":"/(.*)",
         "dest":"app.py"
-    }]
+    }],
+    "git": {
+    "deploymentEnabled": {
+      "docker": false
+    }
+  }
 }

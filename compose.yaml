@@ -12,7 +12,7 @@ services:
     image: "redis:alpine"
     container_name: redis
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT}:6379"
     command: redis-server --requirepass ${REDIS_PASSWORD}
     networks:
       - app-network
@@ -21,7 +21,7 @@ services:
     container_name: db
     hostname: db
     ports:
-      - "5432:5432"
+      - "${SQL_PORT}:5432"
     environment:
       POSTGRES_DB: ${SQL_DB_NAME}
       POSTGRES_USER: ${SQL_USER}

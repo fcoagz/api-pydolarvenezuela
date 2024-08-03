@@ -1,0 +1,33 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    networks:
+      - app-network
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    networks:
+      - app-network
+  db:
+    image: "postgres:alpine"
+    container_name: db
+    hostname: db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${SQL_DB_NAME}
+      POSTGRES_USER: ${SQL_USER}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD}
+    networks:
+      - app-network
+
+networks:
+  app-network:

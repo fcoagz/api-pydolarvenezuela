@@ -1,18 +1,17 @@
 {
-    "builds": [
-        {
-            "src":"app.py",
-            "use":"@vercel/python"
-        }
-    ],
-    "routes":[
+  "builds": [
     {
-        "src":"/(.*)",
-        "dest":"app.py"
-    }],
-    "git": {
-    "deploymentEnabled": {
-      "docker": false
+      "src": "app.py",
+      "use": "@vercel/python"
     }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app.py"
+    }
+  ],
+  "build": {
+    "ignoreCommand": "if [ \"$VERCEL_GIT_COMMIT_REF\" == \"docker\" ]; then exit 0; fi"
   }
 }

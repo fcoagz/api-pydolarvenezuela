@@ -26,6 +26,8 @@ services:
       POSTGRES_DB: ${SQL_DB_NAME}
       POSTGRES_USER: ${SQL_USER}
       POSTGRES_PASSWORD: ${SQL_PASSWORD}
+    volumes:
+      - db:/var/lib/postgresql/data
     networks:
       - app-network
 

@@ -9,7 +9,7 @@ from pyDolarVenezuela.pages import (
     EnParaleloVzla, 
     Italcambio
 )
-from pyDolarVenezuela import Monitor, LocalDatabase, CheckVersion
+from pyDolarVenezuela import Monitor, Database, CheckVersion
 from .core import logger
 from .core import cache
 from .utils import currencies_dict, providers_dict, update_schedule
@@ -26,7 +26,8 @@ CheckVersion.check = False
 
 ve_time_zone = pytz.timezone('America/Caracas')
 pages    = [AlCambio, BCV, CriptoDolar, DolarToday, EnParaleloVzla, Italcambio]
-monitors = [Monitor(page, currency, db=LocalDatabase(
+monitors = [Monitor(page, currency, db=Database(
+    SQL_MOTOR, SQL_HOST, SQL_DB_NAME, SQL_PORT, SQL_USER, SQL_PASSWORD
     )) for currency in currencies_dict.values() for page in pages if currency in page.currencies]
 
 def update_data(name: str, monitor: Monitor) -> None:

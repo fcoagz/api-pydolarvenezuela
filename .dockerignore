@@ -1,0 +1,12 @@
+# Exclude Python virtual environment files
+venv/
+.venv/
+
+# Exclude any compiled Python files
+*.pyc
+
+# Exclude project-specific files and directories
+config.ini
+*.log
+.vercel
+database.db

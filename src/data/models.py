@@ -8,6 +8,6 @@ class User(Base):
 
     id              = Column(Integer, primary_key=True)
     name            = Column(String, nullable=False)
-    token           = Column(String(16), nullable=False)
+    token           = Column(String(64), nullable=False)
     is_premium      = Column(Boolean, default=False)
     created_at      = Column(DateTime, nullable=False)

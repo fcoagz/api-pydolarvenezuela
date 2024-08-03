@@ -122,8 +122,8 @@ def get_history_monitor(currency: str, page: str, monitor_code: str, start_date:
                 currency = currencies_dict.get(currency, currency)  
 
                 if name_page == page and monitor.currency == currency:
-                    results = monitor.get_prices_history(monitor_code, start_date, end_date)
-                    print(results)
+                    results = monitor.get_prices_history(monitor_code, start_date, end_date)  
+                    
                     if not results:
                         return {'error': 'No se encontró historial de precios.'}
                     

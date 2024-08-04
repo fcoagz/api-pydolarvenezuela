@@ -10,10 +10,12 @@ def is_user_valid(session: Session, token: str) -> bool:
             return True
     return False
 
-def create_user(session: Session, name: str) -> None:
+def create_user(session: Session, name: str) -> str:
     token = f'Bearer {secrets.token_urlsafe(16)}'
     session.add(User(name=name, token=token, is_premium=True, created_at=datetime.now()))
     session.commit()
+
+    return token
 
 def modificate_user(session: Session, id: int, is_premium: bool) -> None:
     session.query(User).filter(User.id == id).update({

@@ -14,9 +14,9 @@ session = sessionmaker(bind=engine)()
 
 @route.get('/api/admin/get_users')
 def get_users_route():
-    _token_admin = request.headers.get('Authorization')
+    token_admin = request.headers.get('Authorization')
     
-    if _token_admin != TOKEN_SECRET:
+    if token_admin != TOKEN_SECRET:
         return jsonify({"error": "Token inválido."}), 401
     
     users = get_users_(session)
@@ -24,16 +24,16 @@ def get_users_route():
 
 @route.post('/api/admin/create_user')
 def create_user():
-    _token_admin = request.headers.get('Authorization')
+    token_admin = request.headers.get('Authorization')
     name = request.form.get('name')
     
-    if _token_admin != TOKEN_SECRET:
+    if token_admin != TOKEN_SECRET:
         return jsonify({"error": "Token inválido."}), 401
     
     if name:
         try:
-            create_user_(session, name)
-            return jsonify({"message": "Usuario creado exitosamente."}), 201
+            token = create_user_(session, name)
+            return jsonify({"message": "Usuario creado exitosamente.", "token": token}), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 400
         
@@ -41,11 +41,11 @@ def create_user():
 
 @route.put('/api/admin/modificate_user')
 def modificate_user():
-    _token_admin = request.headers.get('Authorization')
+    token_admin = request.headers.get('Authorization')
     id = request.form.get('id')
     is_premium = request.form.get('is_premium')
     
-    if _token_admin != TOKEN_SECRET:
+    if token_admin != TOKEN_SECRET:
         return jsonify({"error": "Token inválido."}), 401
     
     if all([id, is_premium]):
@@ -56,10 +56,10 @@ def modificate_user():
 
 @route.delete('/api/admin/delete_user')
 def delete_user():
-    _token_admin = request.headers.get('Authorization')
+    token_admin = request.headers.get('Authorization')
     id = request.form.get('id')
     
-    if _token_admin != TOKEN_SECRET:
+    if token_admin != TOKEN_SECRET:
         return jsonify({"error": "Token inválido."}), 401
     
     if id:

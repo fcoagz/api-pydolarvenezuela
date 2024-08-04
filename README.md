@@ -102,7 +102,7 @@ Si deseas conocer características interesantes de la API de por vida, considera
 
 | Características | Gratis | Token |
 | --------------- | ------ | ------ |
-| Solicitudes API | 100/hora | ---- |
+| Solicitudes API | 100/hora | ∞ |
 | Historial de precios | No | Sí |
 | Obtención de fuentes directas en un solo lugar | Por separado | Sí |
 

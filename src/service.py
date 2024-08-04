@@ -76,6 +76,7 @@ def get_accurate_monitors(monitor_code: Optional[str] = None) -> Union[Dict[str,
 
             if 'usd' in data:
                 monitor_data['bcv'] = data['usd']
+                continue
             monitor_data['enparalelovzla'] = data['enparalelovzla']
         
         result = {

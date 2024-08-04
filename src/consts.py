@@ -1,4 +1,5 @@
 import os
+import pytz
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -25,3 +26,5 @@ else:
 
 URL_DB  = f'{SQL_MOTOR}://{SQL_USER}:{SQL_PASSWORD}@{SQL_HOST}:{SQL_PORT}/{SQL_DB_NAME}'
 # URL_REDIS = f'redis://{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
+
+TIME_ZONE = pytz.timezone('America/Caracas')

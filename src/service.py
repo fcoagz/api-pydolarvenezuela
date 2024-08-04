@@ -1,9 +1,9 @@
 import json
-from datetime import datetime
 from typing import Union, Optional, Dict, List, Any
 from pyDolarVenezuela import getdate, currency_converter
 from .cron import monitors
 from .core import cache
+from .consts import TIME_ZONE
 from .utils import providers, providers_dict, currencies_dict
 
 def format_prices_history(results: List[Dict[str, Any]]) -> None:
@@ -15,7 +15,8 @@ def format_prices_history(results: List[Dict[str, Any]]) -> None:
     for result in results:
         if 'last_update' in result:
             last_update = result['last_update']
-            formatted_last_update = datetime.strftime(last_update, '%d/%m/%Y, %I:%M %p')
+            last_update_ve = last_update.astimezone(TIME_ZONE)
+            formatted_last_update = last_update_ve.strftime('%d/%m/%Y, %I:%M %p')
             result.update({'last_update': formatted_last_update})
 
 def _get_monitor(monitor_code: str, monitors_founds: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:

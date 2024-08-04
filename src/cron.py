@@ -1,5 +1,4 @@
 import json
-import pytz
 from datetime import datetime
 from pyDolarVenezuela.pages import (
     AlCambio, 
@@ -19,12 +18,12 @@ from .consts import (
     SQL_DB_NAME,
     SQL_PORT,
     SQL_USER,
-    SQL_PASSWORD
+    SQL_PASSWORD,
+    TIME_ZONE
 )
 
 CheckVersion.check = False
 
-ve_time_zone = pytz.timezone('America/Caracas')
 pages    = [AlCambio, BCV, CriptoDolar, DolarToday, EnParaleloVzla, Italcambio]
 monitors = [Monitor(page, currency, db=Database(
     SQL_MOTOR, SQL_HOST, SQL_DB_NAME, SQL_PORT, SQL_USER, SQL_PASSWORD
@@ -43,7 +42,8 @@ def update_data(name: str, monitor: Monitor) -> None:
         for key, monitor_info in monitors_dict.items():
             if 'last_update' in monitor_info:
                 last_update = monitor_info['last_update']
-                formatted_last_update = datetime.strftime(last_update, '%d/%m/%Y, %I:%M %p')
+                last_update_ve = last_update.astimezone(TIME_ZONE)
+                formatted_last_update = last_update_ve.strftime('%d/%m/%Y, %I:%M %p')
                 monitor_info['last_update'] = formatted_last_update
             monitors_dict[key] = monitor_info
         
@@ -56,7 +56,7 @@ def job() -> None:
     Itera sobre los monitores y actualiza los datos en caché.\n
     Actualiza los datos de un monitor si la hora actual está dentro del rango de actualización.
     """
-    hour_current = datetime.now(pytz.timezone('America/Caracas')).strftime('%H:%M')
+    hour_current = datetime.now(TIME_ZONE).strftime('%H:%M')
     for monitor in monitors:
         name = providers_dict.get(monitor.provider.name)
         cache_key = f'{name}:{monitor.currency}'

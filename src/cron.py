@@ -11,7 +11,7 @@ from pyDolarVenezuela.pages import (
 from pyDolarVenezuela import Monitor, Database, CheckVersion
 from .core import logger
 from .core import cache
-from .utils import currencies_dict, providers_dict, update_schedule
+from .utils import currencies_dict, providers_dict, update_schedule, format_last_update
 from .consts import (
     SQL_HOST,
     SQL_MOTOR,
@@ -37,16 +37,9 @@ def update_data(name: str, monitor: Monitor) -> None:
     - monitor: Instancia de Monitor.
     """
     try:
-        monitors_dict = {info.pop('key'): info for info in monitor.get_all_monitors()}
-        
-        for key, monitor_info in monitors_dict.items():
-            if 'last_update' in monitor_info:
-                last_update = monitor_info['last_update']
-                last_update_ve = last_update.astimezone(TIME_ZONE)
-                formatted_last_update = last_update_ve.strftime('%d/%m/%Y, %I:%M %p')
-                monitor_info['last_update'] = formatted_last_update
-            monitors_dict[key] = monitor_info
-        
+        monitors = monitor.get_all_monitors()
+        format_last_update(monitors)
+        monitors_dict = {info.pop('key'): info for info in monitors}        
         cache[f'{name}:{monitor.currency}'] = json.dumps(monitors_dict)
     except Exception as e:
         logger.warning(f'Error al obtener datos de {monitor.provider.name}: {str(e)}')

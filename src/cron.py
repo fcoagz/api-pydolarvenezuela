@@ -63,14 +63,15 @@ def job() -> None:
         cached_data = cache.get(cache_key)
 
         if not cached_data:
-            logger.info(f'No hay datos en caché para {cache_key}. Actualizando...')
+            logger.info(f'No había datos almacenados en caché de "{monitor.provider.name}". Obteniendo datos.')
             update_data(name, monitor)
             continue
         
         if name not in update_schedule:
+            logger.info(f'Actualizando datos de "{monitor.provider.name}".')
             update_data(name, monitor)
         else:
             for start, end in update_schedule.get(name, []):
                 if hour_current >= start and hour_current <= end:
-                    logger.info(f'Actualizando datos de {monitor.provider.name}...')
+                    logger.info(f'Actualizando datos de "{monitor.provider.name}".')
                     update_data(name, monitor)

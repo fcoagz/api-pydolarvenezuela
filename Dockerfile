@@ -5,9 +5,10 @@ COPY . /app
 
 EXPOSE 8000
 
-# https://github.com/docker-library/rabbitmq/issues/436
-RUN apk add --no-cache tzdata
+# https://gitlab.alpinelinux.org/alpine/aports/-/issues/12057
 ENV TZ="America/Caracas"
+RUN apk add --no-cache tzdata
+RUN ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime
 
 RUN pip install -r requirements.txt --no-cache-dir
 CMD ["python", "app.py"]

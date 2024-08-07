@@ -1,7 +1,7 @@
 ﻿flask==3.0.3
 flask_cors==4.0.0
 flasgger==0.9.7.1
-pydolarvenezuela==1.8.8
+pydolarvenezuela==1.8.9
 cachetools==5.3.3
 psycopg2-binary==2.9.9
 python-dotenv==1.0.1

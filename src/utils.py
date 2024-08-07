@@ -1,4 +1,6 @@
+from datetime import datetime
 from typing import List, Dict, Any
+from .consts import TIME_ZONE
 
 providers = ['criptodolar', 'bcv', 'italcambio', 'alcambio', 'dolartoday', 'enparalelovzla']
 
@@ -31,5 +33,7 @@ def format_last_update(results: List[Dict[str, Any]]) -> None:
     for result in results:
         if 'last_update' in result:
             last_update = result['last_update']
-            formatted_last_update = last_update.strftime('%d/%m/%Y, %I:%M %p')
-            result.update({'last_update': formatted_last_update})
+            last_update_dt = datetime.fromisoformat(last_update)
+            last_update_ve = last_update_dt.astimezone(TIME_ZONE)
+            
+            result.update({'last_update': last_update_ve.strftime('%d/%m/%Y, %I:%M %p')})

@@ -24,6 +24,7 @@ update_schedule = {
     'bcv': [('16:00', '17:55')]
 }
 
+# https://stackoverflow.com/questions/414952/sqlalchemy-datetime-timezone
 def format_last_update(results: List[Dict[str, Any]]) -> None:
     """
     Formatea la fecha de la última actualización de los resultados.

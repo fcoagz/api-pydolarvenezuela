@@ -34,7 +34,6 @@ def format_last_update(results: List[Dict[str, Any]]) -> None:
     for result in results:
         if 'last_update' in result:
             last_update = result['last_update']
-            last_update_dt = datetime.fromisoformat(last_update)
-            last_update_ve = last_update_dt.astimezone(TIME_ZONE)
+            last_update_ve = last_update.astimezone(TIME_ZONE)
             
             result.update({'last_update': last_update_ve.strftime('%d/%m/%Y, %I:%M %p')})

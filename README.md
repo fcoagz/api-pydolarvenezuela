@@ -110,32 +110,6 @@ Envíame un mensaje privado desde Ko-fi para que pueda proporcionarte el token d
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/O5O5RFF4T)
 
-## Variables de entorno
-
-### Base de datos
-
-pyDolarVenezuela utiliza SQLAlchemy para la integración de la base de datos Postgres. [Más información](https://github.com/fcoagz/pydolarvenezuela?tab=readme-ov-file#base-de-datos)
-
-- `SQL_MOTOR`
-- `SQL_HOST`
-- `SQL_DB_NAME`
-- `SQL_PORT`
-- `SQL_USER`
-- `SQL_PASSWORD`
-
-### Redis
-
-Utiliza [Redis](https://redis.io/try-free/) para mejorar el rendimiento, escalabilidad y eficiencia en el manejo de datos en memoria.
-
-- `REDIS_HOST`
-- `REDIS_PORT`
-- `REDIS_PASSWORD`
-- `REDIS_DB`
-
-### Admin
-
-- `TOKEN_SECRET`
-
 ## Contributores
 
 <a href="https://github.com/fcoagz/api-pydolarvenezuela/graphs/contributors">

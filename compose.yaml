@@ -1,3 +1,5 @@
+name: "pydolarvenezuela-api"
+
 services:
   web:
     build: .
@@ -19,15 +21,19 @@ services:
     networks:
       - app-network
   db:
-    image: "postgres:alpine"
+    image: "postgres:16-alpine3.20"
     container_name: db
     hostname: db
     ports:
       - "${SQL_PORT}:5432"
     environment:
+      TZ: ${TIMEZONE}
+      PGTZ: ${TIMEZONE}
       POSTGRES_DB: ${SQL_DB_NAME}
       POSTGRES_USER: ${SQL_USER}
       POSTGRES_PASSWORD: ${SQL_PASSWORD}
+    healthcheck:
+      test: pg_isready -d ${SQL_DB_NAME} -U ${SQL_USER}
     volumes:
       - db:/var/lib/postgresql/data
     networks:

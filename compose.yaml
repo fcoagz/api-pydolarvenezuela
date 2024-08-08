@@ -22,6 +22,7 @@ services:
       - app-network
   db:
     image: "postgres:16-alpine3.20"
+    restart: always
     container_name: db
     hostname: db
     ports:

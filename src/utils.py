@@ -1,5 +1,5 @@
-from datetime import datetime
-from typing import List, Dict, Any
+from pyDolarVenezuela.models import Monitor, HistoryPrice
+from typing import List, Dict, Any, Union
 from .consts import TIME_ZONE
 
 providers = ['criptodolar', 'bcv', 'italcambio', 'alcambio', 'dolartoday', 'enparalelovzla']
@@ -25,15 +25,13 @@ update_schedule = {
 }
 
 # https://stackoverflow.com/questions/414952/sqlalchemy-datetime-timezone
-def format_last_update(results: List[Dict[str, Any]]) -> None:
+def format_last_update(results: List[Union[Monitor, HistoryPrice]]) -> List[Union[Monitor, HistoryPrice]]:
     """
     Formatea la fecha de la última actualización de los resultados.
 
     - results: Lista de resultados.
     """
     for result in results:
-        if 'last_update' in result:
-            last_update = result['last_update']
-            last_update_ve = last_update.astimezone(TIME_ZONE)
-            
-            result.update({'last_update': last_update_ve.strftime('%d/%m/%Y, %I:%M %p')})
+        last_update_obj = result.last_update.astimezone(TIME_ZONE)
+        result.last_update = last_update_obj.strftime('%d/%m/%Y, %I:%M %p')
+    return results

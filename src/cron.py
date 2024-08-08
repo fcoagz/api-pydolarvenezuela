@@ -37,10 +37,9 @@ def update_data(name: str, monitor: Monitor) -> None:
     - monitor: Instancia de Monitor.
     """
     try:
-        monitors = monitor.get_all_monitors()
-        format_last_update(monitors)
-        monitors_dict = {info.pop('key'): info for info in monitors}        
-        cache[f'{name}:{monitor.currency}'] = json.dumps(monitors_dict)
+        monitors = format_last_update(monitor.get_all_monitors())
+        monitors_dict = {data.__dict__.pop('key'): data.__dict__ for data in monitors}
+        cache.set(f'{name}:{monitor.currency}', json.dumps(monitors_dict))
     except Exception as e:
         logger.warning(f'Error al obtener datos de {monitor.provider.name}: {str(e)}')
 
@@ -63,8 +62,10 @@ def job() -> None:
         if name not in update_schedule:
             logger.info(f'Actualizando datos de "{monitor.provider.name}".')
             update_data(name, monitor)
-        else:
-            for start, end in update_schedule.get(name, []):
-                if hour_current >= start and hour_current <= end:
-                    logger.info(f'Actualizando datos de "{monitor.provider.name}".')
-                    update_data(name, monitor)
+            continue
+        
+        for start, end in update_schedule.get(name, []):
+            if hour_current >= start and hour_current <= end:
+                logger.info(f'Actualizando datos de "{monitor.provider.name}".')
+                update_data(name, monitor)
+                break

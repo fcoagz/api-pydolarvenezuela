@@ -1,5 +1,5 @@
 from pyDolarVenezuela.models import Monitor, HistoryPrice
-from typing import List, Dict, Any, Union
+from typing import List, Union
 from .consts import TIME_ZONE
 
 providers = ['criptodolar', 'bcv', 'italcambio', 'alcambio', 'dolartoday', 'enparalelovzla']

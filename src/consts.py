@@ -19,7 +19,7 @@ REDIS_DB       = os.getenv('REDIS_DB', 0) # default 0
 TOKEN_SECRET   = os.getenv('TOKEN_SECRET')
 TIMEOUT        = int(os.getenv('TIMEOUT', 15)) # in minutes
 
-TIME_ZONE      = os.getenv('TIME_ZONE', 'America/Caracas')
+TIME_ZONE      = os.getenv('TIMEZONE', 'America/Caracas')
 TIME_ZONE      = timezone(TIME_ZONE)
 
 if os.getenv('GETLOGS') == 'True':

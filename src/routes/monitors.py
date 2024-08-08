@@ -8,7 +8,7 @@ from ..service import (
     get_page_or_monitor,
     get_accurate_monitors,
     get_price_converted,
-    get_history_monitor, 
+    get_history_prices, 
     get_daily_changes as get_daily_changes_
 )
 
@@ -60,7 +60,7 @@ def get_history(currency: Literal['dollar', 'euro']):
         if not is_user_valid(session, token):
             return jsonify({'error': 'Token no válido.'}), 401
         
-        response = get_history_monitor(currency, page, monitor, start_date, end_date)
+        response = get_history_prices(currency, page, monitor, start_date, end_date)
         return handle_response(response)
     else:
         return jsonify({'error': 'Requiere token para acceder'}), 401

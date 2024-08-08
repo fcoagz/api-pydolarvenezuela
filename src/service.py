@@ -1,9 +1,15 @@
 import json
-from typing import Union, Optional, Dict, List, Any
+from typing import Union, Optional, Literal, Dict, List, Any
 from pyDolarVenezuela import getdate, currency_converter
 from .cron import monitors
 from .core import cache
 from .utils import providers, providers_dict, currencies_dict, format_last_update
+
+def _get_cache_key(*args) -> str:
+    """
+    Obtiene la clave de caché.
+    """
+    return ':'.join(args)
 
 def _get_monitor(monitor_code: str, monitors_founds: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
     """
@@ -91,18 +97,18 @@ def get_page_or_monitor(currency: str, page: Optional[str] = None, monitor_code:
         return _get_monitor(monitor_code, result['monitors'])
     return result
 
-def get_history_monitor(currency: str, page: str, monitor_code: str, start_date: str, end_date: str) -> List[Dict[str, Any]]:
-    """
-    Obtiene el historial de un monitor.
+def fetch_monitor_data(monitor: Any, monitor_code: str, start_date: str, end_date: str, data_type: Literal['daily', 'history']) -> List[Dict[str, Any]]:
+    if data_type == 'history':
+        return monitor.get_prices_history(monitor_code, start_date, end_date)
+    elif data_type == 'daily':
+        return monitor.get_daily_price_monitor(monitor_code, start_date)
 
-    - currency: Moneda.
-    - page: Página.
-    - monitor_code: Key del monitor.
-    - start_date: Fecha de inicio.
-    - end_date: Fecha de fin.
+def get_monitor_data(currency: str, page: str, monitor_code: str, start_date: str, end_date: str, data_type: Literal['daily', 'history']) -> List[Dict[str, Any]]:
+    """
+    Obtiene el historial de precios de un monitor.
     """
     try:
-        key = f'{page}:{currency}:{monitor_code}:{start_date}:{end_date}' 
+        key = _get_cache_key(page, currency, monitor_code, start_date, end_date, data_type)
         
         if cache.get(key) is None:
             for monitor in monitors:     
@@ -110,24 +116,38 @@ def get_history_monitor(currency: str, page: str, monitor_code: str, start_date:
                 currency = currencies_dict.get(currency, currency)  
 
                 if name_page == page and monitor.currency == currency:
-                    results = monitor.get_prices_history(monitor_code, start_date, end_date)  
+                    results = fetch_monitor_data(monitor, monitor_code, start_date, end_date, data_type)  
                     
                     if not results:
-                        return {'error': 'No se encontró historial de precios.'}
+                        return {'error': f'No se encontró {'historial de precios.' if data_type == 'history' else 'cambios diarios.'}'}
                     
-                    format_last_update(results)
-                    results = {
-                        'datetime': getdate(),
-                        'history': results}
-                    
-                    cache.set(key, json.dumps(results), ex=1800)
+                    results = format_last_update(results)
+                    results_dict = [data.__dict__ for data in results]
+                    cache.set(key, json.dumps(results_dict), ex=1800)
                     break
             else:
                 return {'error': 'No se encontró el monitor al que quieres acceder.'}
-        results = json.loads(cache.get(key))
+        
+        data = json.loads(cache.get(key))
+        results = {
+            'datetime': getdate(),
+            data_type: data
+        }
         return results       
     except Exception as e:
         return {'error': f'Ocurrió un error: {str(e)}'}
+
+def get_history_prices(currency: str, page: str, monitor_code: str, start_date: str, end_date: str) -> Union[Dict[str, Any], Dict[str, str]]:
+    """
+    Obtiene el historial de precios de un monitor.
+
+    - currency: Moneda.
+    - page: Página.
+    - monitor_code: Key del monitor.
+    - start_date: Fecha de inicio.
+    - end_date: Fecha de finalización.
+    """
+    return get_monitor_data(currency, page, monitor_code, start_date, end_date, 'history')
 
 def get_daily_changes(currency: str, page: str, monitor_code: str, date: str) -> Union[Dict[str, Any], Dict[str, str]]:
     """
@@ -138,33 +158,7 @@ def get_daily_changes(currency: str, page: str, monitor_code: str, date: str) ->
     - monitor_code: Key del monitor.
     - date: Fecha.
     """
-    try:
-        key = f'{page}:{currency}:{monitor_code}:{date}'
-        
-        if cache.get(key) is None:
-            for monitor in monitors:
-                name_page = providers_dict.get(monitor.provider.name)
-                currency = currencies_dict.get(currency, currency)
-
-                if name_page == page and monitor.currency == currency:
-                    results = monitor.get_daily_price_monitor(monitor_code, date)
-                    
-                    if not results:
-                        return {'error': 'No se encontraron cambios diarios.'}
-                    
-                    format_last_update(results)
-                    results = {
-                        'datetime': getdate(),
-                        'changes': results}
-
-                    cache.set(key, json.dumps(results), ex=1800)
-                    break
-            else:
-                return {'error': 'No se encontró el monitor al que quieres acceder.'}
-        results = json.loads(cache.get(key))
-        return results
-    except Exception as e:
-        return {'error': f'Ocurrió un error: {str(e)}'}
+    return get_monitor_data(currency, page, monitor_code, date, date, 'daily')
 
 def get_price_converted(currency: str, type: str, value, monitor_code: str) -> Union[float, Dict[str, str]]:
     """

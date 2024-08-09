@@ -43,6 +43,15 @@ def update_data(name: str, monitor: Monitor) -> None:
     except Exception as e:
         logger.warning(f'Error al obtener datos de {monitor.provider.name}: {str(e)}')
 
+def reload_monitors() -> None:
+    """
+    Recarga los datos de los monitores y los guarda en caché.
+    """
+    for monitor in monitors:
+        name = providers_dict.get(monitor.provider.name)
+        logger.info(f'Recargando datos de "{monitor.provider.name}".')
+        update_data(name, monitor)
+
 def job() -> None:
     """
     Itera sobre los monitores y actualiza los datos en caché.\n
@@ -51,13 +60,6 @@ def job() -> None:
     hour_current = datetime.now(TIME_ZONE).strftime('%H:%M')
     for monitor in monitors:
         name = providers_dict.get(monitor.provider.name)
-        cache_key = f'{name}:{monitor.currency}'
-        cached_data = cache.get(cache_key)
-
-        if not cached_data:
-            logger.info(f'No había datos almacenados en caché de "{monitor.provider.name}". Obteniendo datos.')
-            update_data(name, monitor)
-            continue
         
         if name not in update_schedule:
             logger.info(f'Actualizando datos de "{monitor.provider.name}".')

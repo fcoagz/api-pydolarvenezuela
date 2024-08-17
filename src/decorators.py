@@ -45,8 +45,10 @@ def token_optional_user(f):
         token = request.headers.get('Authorization')
 
         if not token:
-            limiter.limit("100 per hour")(lambda: None)()
-            return f(*args, **kwargs)
+            @limiter.limit("100 per hour")
+            def limited_func():
+                return f(*args, **kwargs)
+            return limited_func()
 
         if token and not is_user_valid(session, token):
             return jsonify({'error': 'Token no válido.'}), 401

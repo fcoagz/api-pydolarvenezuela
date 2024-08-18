@@ -6,8 +6,6 @@ Swagger API: http://pydolarve.org/apidocs
 
 ## URL base
 
-La URL sigue siendo válida: `https://pydolarvenezuela-api.vercel.app/`. Aunque hubo que migrar la API a otro servidor.
-
 ```
 http://pydolarve.org/
 ```
@@ -83,12 +81,12 @@ Ruta:
 ## Uso
 Para obtener información actualizada sobre el precio del dólar en Venezuela de `EnParaleloVzla`, puedes hacer una solicitud GET a la siguiente URL:
 ```sh
-curl -X GET "https://pydolarvenezuela-api.vercel.app/api/v1/dollar?monitor=enparalelovzla"
+curl -X GET "http://pydolarve.org/api/v1/dollar?monitor=enparalelovzla"
 ```
 
 Para obtener información sobre el dólar en una página específica, puedes hacer una solicitud GET a la siguiente URL:
 ```sh
-curl -X GET "https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv"
+curl -X GET "http://pydolarve.org/api/v1/dollar?page=bcv"
 ```
 
 ## Sponsors

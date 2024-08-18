@@ -52,7 +52,7 @@ def token_optional_user(f):
         token = request.headers.get('Authorization')
 
         if not token:
-            @limiter.limit("100 per hour", key_func=_get_ip)
+            @limiter.limit("500 per hour", key_func=_get_ip)
             def limited_func():
                 return f(*args, **kwargs)
             return limited_func()

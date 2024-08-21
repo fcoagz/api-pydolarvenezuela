@@ -2,12 +2,12 @@
 
 La API de pyDolarVenezuela es una herramienta eficiente y confiable que brinda información en tiempo real sobre el valor del dólar y euro en Venezuela. Además, facilita la conversión precisa entre bolívares y estas monedas extranjeras.
 
-Swagger API: http://pydolarve.org/apidocs
+Swagger API: https://pydolarve.org/apidocs
 
 ## URL base
 
 ```
-http://pydolarve.org/
+https://pydolarve.org/
 ```
 
 ## Endpoints
@@ -81,12 +81,12 @@ Ruta:
 ## Uso
 Para obtener información actualizada sobre el precio del dólar en Venezuela de `EnParaleloVzla`, puedes hacer una solicitud GET a la siguiente URL:
 ```sh
-curl -X GET "http://pydolarve.org/api/v1/dollar?monitor=enparalelovzla"
+curl -X GET "https://pydolarve.org/api/v1/dollar?monitor=enparalelovzla"
 ```
 
 Para obtener información sobre el dólar en una página específica, puedes hacer una solicitud GET a la siguiente URL:
 ```sh
-curl -X GET "http://pydolarve.org/api/v1/dollar?page=bcv"
+curl -X GET "https://pydolarve.org/api/v1/dollar?page=bcv"
 ```
 
 ## Sponsors
@@ -100,7 +100,7 @@ Si deseas conocer características interesantes de la API de por vida, considera
 
 | Características | Gratis | Token |
 | --------------- | ------ | ------ |
-| Solicitudes API | 500/hora | ∞ |
+| Solicitudes API | 12k/día | ∞ |
 | Historial de precios | No | Sí |
 | Obtención de fuentes directas en un solo lugar | Por separado | Sí |
 

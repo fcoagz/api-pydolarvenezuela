@@ -94,6 +94,11 @@ curl -X GET "https://pydolarve.org/api/v1/dollar?page=bcv"
 <a href="https://www.capasiete.com/" target="_blank" title="Capa7, proveedor de servicios web hosting, streaming y servidores, servicios rápidos, confiables, y seguros, 99.9% óptimo, soporte 24/7."><img src="https://github.com/fcoagz/api-pydolarvenezuela/blob/main/assets/sponsor/capasiete.jpg?raw=true" width="250" height="150"></a>
 <a href="https://criptomerkado.com/" target="_blank" title="Somos una plataforma para compra y venta de cripto monedas." ><img src="https://github.com/fcoagz/api-pydolarvenezuela/blob/main/assets/sponsor/criptomerkado.jpg?raw=true" width="250" height="150"></a>
 
+## Individual Sponsors
+
+| [<img src="https://avatars.githubusercontent.com/u/26844099?v=4" width=115><br><sub>José Gregorio</sub>](https://estacionweb.net/) |  
+| :---: | 
+
 ## Apoya este proyecto
 
 Si deseas conocer características interesantes de la API de por vida, considera hacer una donación o suscribirte a través de [Ko-fi](https://ko-fi.com/fcoagz). Tu apoyo contribuirá al continuo desarrollo del proyecto y al mantenimiento de los servicios en los que está alojado.

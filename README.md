@@ -107,8 +107,11 @@ curl -X GET "https://pydolarve.org/api/v1/dollar?page=bcv"
 
 ## Individual Sponsors
 
-| [<img src="https://avatars.githubusercontent.com/u/26844099?v=4" width=115><br><sub>José Gregorio</sub>](https://estacionweb.net/) |  
-| :---: | 
+| [<img src="https://avatars.githubusercontent.com/u/26844099?v=4" width=115><br><sub>José Gregorio</sub>](https://estacionweb.net/) | [<img src="https://avatars.githubusercontent.com/u/130260543?v=4" width=115><br><sub>Bryan</sub>](https://github.com/braymm) |  
+| :---: | :---: | 
+
+
+
 
 ## Apoya este proyecto
 

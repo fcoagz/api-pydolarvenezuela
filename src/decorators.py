@@ -14,7 +14,6 @@ def _get_ip():
     else:
         return request.remote_addr
 
-
 def token_required_admin(f):
     """
     Token de autenticación requerido para acceder a las rutas Admin.
@@ -29,28 +28,17 @@ def token_required_admin(f):
         return f(*args, **kwargs)
     return decorated
 
-def token_required_user(f):
+def token_required(f):
     """
-    Token de autenticación requerido para acceder a las rutas User.
+    Token de autenticación opcional pero requerido para acceder a las rutas User.
     """
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get('Authorization')
-        if not token:
+        
+        if not token and request.path in ['/api/v1/dollar/history', '/api/v1/dollar/changes']:
             return jsonify({'error': 'Requiere token para acceder'}), 401
-        if not is_user_valid(session, token):
-            return jsonify({'error': 'Token no válido.'}), 401
-        return f(*args, **kwargs)
-    return decorated
-
-def token_optional_user(f):
-    """
-    Token de autenticación opcional.
-    """
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.headers.get('Authorization')
-
+        
         if not token:
             @limiter.limit("500 per hour", key_func=_get_ip)
             def limited_func():

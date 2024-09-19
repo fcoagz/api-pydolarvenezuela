@@ -37,8 +37,8 @@ app.register_error_handler(504, gateway_timeout)
 
 # routes
 app.register_blueprint(index.route)
-app.register_blueprint(monitors.route)
-app.register_blueprint(admin.route)
+app.register_blueprint(monitors.route, url_prefix='/api/v1')
+app.register_blueprint(admin.route, url_prefix='/api/admin')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)

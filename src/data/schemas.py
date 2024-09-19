@@ -9,8 +9,8 @@ class UserSchema(ma.Schema):
 
     @pre_dump
     def adjust_timezone(self, data, **kwargs):
-        if data.last_update:
-            data.last_update = data.last_update.astimezone(TIME_ZONE)
+        if data.created_at:
+            data.create_at = data.last_update.astimezone(TIME_ZONE)
         return data
     class Meta:
         fields = ("id", "name", "token", "is_premium", "created_at")

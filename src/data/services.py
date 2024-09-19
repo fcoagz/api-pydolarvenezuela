@@ -2,6 +2,9 @@ import secrets
 from datetime import datetime
 from sqlalchemy.orm import Session
 from .models import User
+from .schemas import UserSchema
+
+user_schema = UserSchema()
 
 def is_user_valid(session: Session, token: str) -> bool:
     user = session.query(User).filter(User.token == token).first()
@@ -28,12 +31,6 @@ def delete_user(session: Session, id: int) -> None:
     session.commit()
 
 def get_users(session: Session) -> list:
-    users = []
     models = session.query(User).all()
-    for model in models:
-        user_dict = {
-            column.name: getattr(model, column.name)
-            for column in model.__table__.columns
-        }
-        users.append(user_dict)
+    users = user_schema.dump(models, many=True)
     return users

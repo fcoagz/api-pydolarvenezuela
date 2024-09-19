@@ -9,9 +9,10 @@ from pyDolarVenezuela.pages import (
     Italcambio
 )
 from pyDolarVenezuela import Monitor, Database, CheckVersion
+from .data.schemas import MonitorSchema
 from .core import logger
 from .core import cache
-from .utils import currencies_dict, providers_dict, update_schedule, format_last_update
+from .utils import currencies_dict, providers_dict, update_schedule
 from .consts import (
     SQL_HOST,
     SQL_MOTOR,
@@ -22,6 +23,7 @@ from .consts import (
     TIME_ZONE
 )
 
+monitor_schema = MonitorSchema()
 CheckVersion.check = False
 
 pages    = [AlCambio, BCV, CriptoDolar, DolarToday, EnParaleloVzla, Italcambio]
@@ -37,8 +39,8 @@ def update_data(name: str, monitor: Monitor) -> None:
     - monitor: Instancia de Monitor.
     """
     try:
-        monitors = format_last_update(monitor.get_all_monitors())
-        monitors_dict = {data.__dict__.pop('key'): data.__dict__ for data in monitors}
+        monitors = monitor_schema.dump(monitor.get_all_monitors(), many=True)
+        monitors_dict = {data.pop('key'): data for data in monitors}
         cache.set(f'{name}:{monitor.currency}', json.dumps(monitors_dict))
     except Exception as e:
         logger.warning(f'Error al obtener datos de {monitor.provider.name}: {str(e)}')

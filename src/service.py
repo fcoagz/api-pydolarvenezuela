@@ -1,9 +1,12 @@
 import json
 from typing import Union, Optional, Literal, Dict, List, Any
 from pyDolarVenezuela import getdate, currency_converter
+from .data.schemas import HistoryPriceSchema
 from .cron import monitors
 from .core import cache
-from .utils import providers, providers_dict, currencies_dict, format_last_update
+from .utils import providers, providers_dict, currencies_dict
+
+history_price_schema = HistoryPriceSchema()
 
 def _get_cache_key(*args) -> str:
     """
@@ -11,7 +14,7 @@ def _get_cache_key(*args) -> str:
     """
     return ':'.join(args)
 
-def _get_monitor(monitor_code: str, monitors_founds: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
+def _get_monitor(monitor_code: str, monitors_founds: Dict[str, Dict[str, Any]]) -> Union[Dict[str, Any], None]:
     """
     Obtiene un monitor en específico.
 
@@ -20,7 +23,7 @@ def _get_monitor(monitor_code: str, monitors_founds: Dict[str, Dict[str, Any]]) 
     """
     if monitor_code in monitors_founds:
         return monitors_founds[monitor_code]
-    return {'error': 'No se encontró el monitor al que quieres acceder'}
+    return None
 
 def get_all_monitors(currency: str, provider: str) -> Union[Dict[str, Any], Dict[str, str]]:
     """
@@ -29,26 +32,21 @@ def get_all_monitors(currency: str, provider: str) -> Union[Dict[str, Any], Dict
     - currency: Moneda.
     - provider: Proveedor.
     """
-    try:
-        if currency not in currencies_dict:
-            return {'error': f'No se encontró la moneda {currency}'}
-        if provider not in providers:
-            return {'error': f'No se encontró el proveedor {provider}'}
-        
-        key = f'{provider}:{currencies_dict.get(currency)}'
-        monitors = cache.get(key)
-        monitors_dict = {}
-        
-        if monitors is not None:
-            monitors_dict = json.loads(monitors)
-        
-        result = {
-            "datetime": getdate(),
-            "monitors": monitors_dict
-        }
-        return result
-    except Exception as e:
-        return {'error': f'An error occurred: {str(e)}'}
+    if currency not in currencies_dict or provider not in providers:
+        raise ValueError(f'No se encontró {'la moneda' if currency not in currencies_dict else 'el proveedor'}.')
+    
+    key = f'{provider}:{currencies_dict.get(currency)}'
+    monitors = cache.get(key)
+    monitors_dict = {}
+    
+    if monitors is not None:
+        monitors_dict = json.loads(monitors)
+    
+    result = {
+        "datetime": getdate(),
+        "monitors": monitors_dict
+    }
+    return result
 
 def get_accurate_monitors(monitor_code: Optional[str] = None) -> Union[Dict[str, Any], Dict[str, str]]:
     """
@@ -57,30 +55,30 @@ def get_accurate_monitors(monitor_code: Optional[str] = None) -> Union[Dict[str,
     - monitor_code: Key del monitor.
     """
     default_monitors = ["bcv:usd", "enparalelovzla:usd"]
-    try:
-        monitor_data = {}
-        for key in default_monitors:
-            data = cache.get(key)
-            
-            if data is None:
-                continue
-            data = json.loads(data)
-
-            if 'usd' in data:
-                monitor_data['bcv'] = data['usd']
-                continue
-            monitor_data['enparalelovzla'] = data['enparalelovzla']
+    monitor_data = {}
+    for key in default_monitors:
+        data = cache.get(key)
         
-        result = {
-            "datetime": getdate(),
-            "monitors": monitor_data
-        }
+        if data is None:
+            continue
+        data = json.loads(data)
 
-        if monitor_code:
-            return _get_monitor(monitor_code, result['monitors'])
+        if 'usd' in data:
+            monitor_data['bcv'] = data['usd']
+            continue
+        monitor_data['enparalelovzla'] = data['enparalelovzla']
+    
+    if monitor_code:
+        result = _get_monitor(monitor_code, monitor_data)
+        if result is None:
+            raise KeyError('No se encontró el monitor que estás buscando.')
         return result
-    except Exception as e:
-        return {'error': f'An error occurred: {str(e)}'}
+    
+    result = {
+        "datetime": getdate(),
+        "monitors": monitor_data
+    }
+    return result
 
 def get_page_or_monitor(currency: str, page: Optional[str] = None, monitor_code: Optional[str] = None) -> Union[Dict[str, Any], Dict[str, str]]:    
     """
@@ -107,35 +105,31 @@ def get_monitor_data(currency: str, page: str, monitor_code: str, start_date: st
     """
     Obtiene el historial de precios de un monitor.
     """
-    try:
-        key = _get_cache_key(page, currency, monitor_code, start_date, end_date, data_type)
-        
-        if cache.get(key) is None:
-            for monitor in monitors:     
-                name_page = providers_dict.get(monitor.provider.name) 
-                currency = currencies_dict.get(currency, currency)  
+    key = _get_cache_key(page, currency, monitor_code, start_date, end_date, data_type)
+    
+    if cache.get(key) is None:
+        for monitor in monitors:     
+            name_page = providers_dict.get(monitor.provider.name) 
+            currency = currencies_dict.get(currency, currency)  
 
-                if name_page == page and monitor.currency == currency:
-                    results = fetch_monitor_data(monitor, monitor_code, start_date, end_date, data_type)  
-                    
-                    if not results:
-                        return {'error': f'No se encontró {'historial de precios.' if data_type == 'history' else 'cambios diarios.'}'}
-                    
-                    results = format_last_update(results)
-                    results_dict = [data.__dict__ for data in results]
-                    cache.set(key, json.dumps(results_dict), ex=1800)
-                    break
-            else:
-                return {'error': 'No se encontró el monitor al que quieres acceder.'}
-        
-        data = json.loads(cache.get(key))
-        results = {
-            'datetime': getdate(),
-            data_type: data
-        }
-        return results       
-    except Exception as e:
-        return {'error': f'Ocurrió un error: {str(e)}'}
+            if name_page == page and monitor.currency == currency:
+                results = fetch_monitor_data(monitor, monitor_code, start_date, end_date, data_type)  
+                
+                if not results:
+                    raise ValueError('No se encontraron datos para el monitor solicitado.')
+                
+                results_dict = history_price_schema.dump(results, many=True)
+                cache.set(key, json.dumps(results_dict), ex=1800)
+                break
+        else:
+            raise KeyError('No se encontró el monitor al que quieres acceder.')
+    
+    data = json.loads(cache.get(key))
+    results = {
+        'datetime': getdate(),
+        data_type: data
+    }
+    return results       
 
 def get_history_prices(currency: str, page: str, monitor_code: str, start_date: str, end_date: str) -> Union[Dict[str, Any], Dict[str, str]]:
     """
@@ -168,10 +162,7 @@ def get_price_converted(currency: str, type: str, value, monitor_code: str) -> U
     - type: Tipo de conversión. (VES, USD, EUR).
     - value: Valor a convertir.
     """
-    try:
-        monitor = get_page_or_monitor(currency, monitor_code=monitor_code)
-        result = currency_converter(type, float(value), monitor)
+    monitor = get_page_or_monitor(currency, monitor_code=monitor_code)
+    result = currency_converter(type, float(value), monitor)
 
-        return result
-    except Exception as e:
-        return {'error': f'An error occurred: {str(e)}'}
+    return result

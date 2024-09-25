@@ -22,10 +22,48 @@ TIMEOUT        = int(os.getenv('TIMEOUT', 15)) # in minutes
 TIME_ZONE      = os.getenv('TIMEZONE', 'America/Caracas')
 TIME_ZONE      = timezone(TIME_ZONE)
 
+PROVIDERS = {
+    'Al Cambio': 'alcambio',
+    'Banco Central de Venezuela': 'bcv',
+    'Cripto Dolar': 'criptodolar',
+    'Dolar Today': 'dolartoday',
+    'EnParaleloVzla': 'enparalelovzla',
+    'Italcambio': 'italcambio'
+}
+CURRENCIES = {
+    'dollar': 'usd',
+    'euro': 'eur'
+}
+UPDATE_SCHEDULE = {
+    'enparalelovzla': {
+        'not': [
+            'Sat', 'Sun'
+        ], 'hours': [
+            ('08:55', '09:55'),
+            ('12:55', '13:55')
+        ]
+    },
+    'alcambio': {
+        'not': [
+            'Sat', 'Sun'
+        ], 'hours': [
+            ('08:55', '09:55'),
+            ('12:55', '13:55'),
+            ('16:55', '17:55')
+        ]
+    },
+    'bcv': {
+        'not': [
+            'Sat', 'Sun'
+        ], 'hours': [
+            ('16:00', '17:55')
+        ]
+    }
+}
+
 if os.getenv('GETLOGS') == 'True':
     GETLOGS = True
 else:
     GETLOGS = False
 
 URL_DB  = f'{SQL_MOTOR}://{SQL_USER}:{SQL_PASSWORD}@{SQL_HOST}:{SQL_PORT}/{SQL_DB_NAME}'
-# URL_REDIS = f'redis://{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'

@@ -20,7 +20,7 @@ if GETLOGS:
 
 # scheduler
 scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(cron.job, 'interval', minutes=TIMEOUT)
+scheduler.add_job(cron.job, 'cron', minute=f'*/{TIMEOUT}')
 scheduler.start()
 
 # app

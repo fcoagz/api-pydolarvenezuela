@@ -12,7 +12,6 @@ from pyDolarVenezuela import Monitor, Database, CheckVersion
 from .data.schemas import MonitorSchema
 from .core import logger
 from .core import cache
-from .utils import currencies_dict, providers_dict, update_schedule
 from .consts import (
     SQL_HOST,
     SQL_MOTOR,
@@ -20,7 +19,10 @@ from .consts import (
     SQL_PORT,
     SQL_USER,
     SQL_PASSWORD,
-    TIME_ZONE
+    TIME_ZONE,
+    CURRENCIES,
+    PROVIDERS,
+    UPDATE_SCHEDULE
 )
 
 monitor_schema = MonitorSchema()
@@ -29,7 +31,7 @@ CheckVersion.check = False
 pages    = [AlCambio, BCV, CriptoDolar, DolarToday, EnParaleloVzla, Italcambio]
 monitors = [Monitor(page, currency, db=Database(
     SQL_MOTOR, SQL_HOST, SQL_DB_NAME, SQL_PORT, SQL_USER, SQL_PASSWORD
-    )) for currency in currencies_dict.values() for page in pages if currency in page.currencies]
+    )) for currency in CURRENCIES.values() for page in pages if currency in page.currencies]
 
 def update_data(name: str, monitor: Monitor) -> None:
     """
@@ -50,7 +52,7 @@ def reload_monitors() -> None:
     Recarga los datos de los monitores y los guarda en caché.
     """
     for monitor in monitors:
-        name = providers_dict.get(monitor.provider.name)
+        name = PROVIDERS.get(monitor.provider.name)
         logger.info(f'Recargando datos de "{monitor.provider.name}".')
         update_data(name, monitor)
 
@@ -59,17 +61,24 @@ def job() -> None:
     Itera sobre los monitores y actualiza los datos en caché.\n
     Actualiza los datos de un monitor si la hora actual está dentro del rango de actualización.
     """
-    hour_current = datetime.now(TIME_ZONE).strftime('%H:%M')
+    dt   = datetime.now(TIME_ZONE)
+    _day_  = dt.strftime('%a')
+    _hour_ = dt.strftime('%H:%M')
+
     for monitor in monitors:
-        name = providers_dict.get(monitor.provider.name)
+        name = PROVIDERS.get(monitor.provider.name)
         
-        if name not in update_schedule:
+        if name not in UPDATE_SCHEDULE.keys():
             logger.info(f'Actualizando datos de "{monitor.provider.name}".')
             update_data(name, monitor)
             continue
-        
-        for start, end in update_schedule.get(name, []):
-            if hour_current >= start and hour_current <= end:
+
+        for day in UPDATE_SCHEDULE.get(name, {}).get('not', []):
+            if _day_ == day:
+                continue
+
+        for start, end in UPDATE_SCHEDULE.get(name, {}).get('hours', []):
+            if _hour_ >= start and _hour_ <= end:
                 logger.info(f'Actualizando datos de "{monitor.provider.name}".')
                 update_data(name, monitor)
                 break

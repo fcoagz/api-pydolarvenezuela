@@ -20,16 +20,24 @@ Este endpoint muestra un mensaje de bienvenida y proporciona un enlace a la docu
 
 Este endpoint permite obtener todas las entidades de seguimiento del dólar y/o euro, junto con su nombre correspondiente, cambio y fecha de la última actualización. Ademas permite obtener información sobre el monitor en una página específica. 
 
-Las páginas disponibles son: 
+**Las páginas disponibles son**: 
+
+- **Fuentes directas**:
+
+| Página web | Ruta |
+| ----  | ---- |
+| [<code><img height="50" alt="Banco Central de Venezuela" src="https://github.com/fcoagz/api-pydolarvenezuela/blob/docker/assets/pages/BCV.png?raw=true"></code>](https://www.bcv.org.ve/) | `api/v1/dollar?page=bcv` |
+| [<code><img height="50" alt="EnParaleloVzla" src="https://github.com/fcoagz/api-pydolarvenezuela/blob/docker/assets/pages/EnParaleloVzla.png?raw=true"></code>](https://t.me/enparalelovzlatelegram)  | `api/v1/dollar?page=enparalelovzla` |
+| [<code><img height="50" alt="Italcambio" src="https://github.com/fcoagz/api-pydolarvenezuela/blob/docker/assets/pages/Italcambio.png?raw=true"></code>](https://www.italcambio.com/) | `api/v1/dollar?page=italcambio`
+
+- **Fuentes informativas**:
 
 | Página web | Ruta |
 | ----  | ---- |
 | [<code><img height="50" alt="AlCambio" src="https://github.com/fcoagz/api-pydolarvenezuela/blob/docker/assets/pages/AlCambio.png?raw=true"></code>](https://alcambio.app/)  | `api/v1/dollar?page=alcambio` |
-| [<code><img height="50" alt="Banco Central de Venezuela" src="https://github.com/fcoagz/api-pydolarvenezuela/blob/docker/assets/pages/BCV.png?raw=true"></code>](https://www.bcv.org.ve/) | `api/v1/dollar?page=bcv` |
 | [<code><img height="50" alt="Criptodolar" src="https://github.com/fcoagz/api-pydolarvenezuela/blob/docker/assets/pages/Criptodolar.png?raw=true"></code>](https://criptodolar.net/)  | `api/v1/<currency>?page=criptodolar` |
 | [<code><img height="50" alt="Dolartodayn" src="https://github.com/fcoagz/api-pydolarvenezuela/blob/docker/assets/pages/Dolartoday.png?raw=true"></code>](https://dolartoday.com/) | `api/v1/dollar?page=dolartoday` |
-| [<code><img height="50" alt="EnParaleloVzla" src="https://github.com/fcoagz/api-pydolarvenezuela/blob/docker/assets/pages/EnParaleloVzla.png?raw=true"></code>](https://t.me/enparalelovzlatelegram)  | `api/v1/dollar?page=enparalelovzla` |
-| [<code><img height="50" alt="Italcambio" src="https://github.com/fcoagz/api-pydolarvenezuela/blob/docker/assets/pages/Italcambio.png?raw=true"></code>](https://www.italcambio.com/) | `api/v1/dollar?page=italcambio`
+
 
 Ruta:
 - `currency`: La moneda en la que se expresarán los precios (`dollar`, `euro`).

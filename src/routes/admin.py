@@ -6,7 +6,8 @@ from ..data.services import (
     create_user as _create_user_,
     modificate_user as _modificate_user_,
     delete_user as _delete_user_,
-    get_users as _get_users_
+    get_users as _get_users_,
+    delete_page as _delete_page_
 )
 
 route   = Blueprint('admin', __name__)
@@ -25,6 +26,20 @@ def reload_monitors():
     
     reload_monitors()
     return jsonify({"message": "Monitores recargados exitosamente."}), 200
+
+@route.put('/delete_page')
+@token_required_admin
+def delete_page():
+    try:
+        name = request.form.get('name')
+
+        if name:
+            _delete_page_(session, name)
+            return jsonify({"message": "Página eliminada exitosamente."}), 200
+        
+        return jsonify({"error": "Falto el nombre de la página."}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 @route.post('/create_user')
 @token_required_admin

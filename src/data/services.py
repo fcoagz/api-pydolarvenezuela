@@ -9,8 +9,7 @@ user_schema = UserSchema()
 def is_user_valid(session: Session, token: str) -> bool:
     user = session.query(User).filter(User.token == token).first()
     if user:
-        if user.is_premium:
-            return True
+        return user.is_premium
     return False
 
 def create_user(session: Session, name: str) -> str:
@@ -34,3 +33,17 @@ def get_users(session: Session) -> list:
     models = session.query(User).all()
     users = user_schema.dump(models, many=True)
     return users
+
+def delete_page(session: Session, name: str) -> None:
+    from pyDolarVenezuela.data.models import Page, Monitor, MonitorPriceHistory
+
+    page = session.query(Page).filter(Page.name == name).first()
+    if not page:
+        raise Exception("La pagina no fue encontrada.")
+    
+    monitors = session.query(Monitor).filter(Monitor.page_id == page.id).all()
+    for monitor in monitors:
+        session.query(MonitorPriceHistory).filter(MonitorPriceHistory.monitor_id == monitor.id).delete()
+    session.query(Monitor).filter(Monitor.page_id == page.id).delete()
+    session.query(Page).filter(Page.name == name).delete()
+    session.commit()

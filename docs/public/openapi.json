@@ -1,0 +1,556 @@
+{
+  "swagger": 4,
+  "openapi": "3.0.0",
+  "info": {
+    "title": "PyDolarVenezuela API",
+    "description": "Esta es la documentación de la API de pyDolarVenezuela donde sabrás cómo utilizar cada endpoint.",
+    "version": "1.9.5",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://pydolarve.org"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Dólar"
+    }
+  ],
+  "paths": {
+    "/api/v1/{currency}": {
+      "get": {
+        "tags": [
+          "Dólar"
+        ],
+        "summary": "Obtener monitores",
+        "description": "Si se especifica un monitor, se obtendrá la información de ese monitor. Si no se especifica, se obtendrá la información de todos los monitores. \n\n**Las páginas disponibles son**: \n - Al Cambio (`alcambio`)  \n - Banco Central de Venezuela (`bcv`) \n - Criptodolar (`criptodolar`) \n - Dolartoday (`dolartoday`) \n - EnParaleloVzla (`enparalelovzla`) \n - Italcambio (`italcambio`)",
+        "operationId": "getMonitors",
+        "parameters": [
+          {
+            "name": "currency",
+            "in": "path",
+            "required": true,
+            "description": "La moneda en la que se expresarán los precios (dollar, euro).",
+            "schema": {
+              "type": "string",
+              "example": "dollar"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "La página de la que se quiere obtener la información.",
+            "schema": {
+              "type": "string",
+              "default": "criptodolar",
+              "example": "criptodolar"
+            }
+          },
+          {
+            "name": "monitor",
+            "in": "query",
+            "required": false,
+            "description": "El monitor específico del que se quiere obtener la información.",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La información de los monitores de la página.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllMonitors"
+                },
+                "example": {
+                  "datetime": {
+                    "date": "2024-01-01",
+                    "time": "12:00:00"
+                  },
+                  "monitors": {
+                    "monitor": {
+                      "change": 1.23,
+                      "color": "green",
+                      "image": "https://example.com/image.png",
+                      "last_update": "2024-01-01T12:00:00Z",
+                      "percent": 0.5,
+                      "price": 100.0,
+                      "price_old": 99.0,
+                      "symbol": "+",
+                      "title": "Monitor 1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error."
+          },
+          "404": {
+            "description": "No se pudo encontrar la página que estaba buscando."
+          }
+        }
+      }
+    },
+    "/api/v1/{currency}/conversion": {
+      "get": {
+        "tags": [
+          "Dólar"
+        ],
+        "summary": "Convertir valor",
+        "description": "Convierte un valor en bolívares a su equivalente a estas monedas extranjeras y viceversa.",
+        "operationId": "getConversion",
+        "parameters": [
+          {
+            "name": "currency",
+            "in": "path",
+            "required": true,
+            "description": "La moneda en la que se expresarán los precios (dollar, euro).",
+            "schema": {
+              "type": "string",
+              "example": "dollar"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "El tipo de conversión. Puede ser (VES, USD, EUR).",
+            "schema": {
+              "type": "string",
+              "example": "VES"
+            }
+          },
+          {
+            "name": "value",
+            "in": "query",
+            "required": true,
+            "description": "El valor a convertir.",
+            "schema": {
+              "type": "number",
+              "example": 1000
+            }
+          },
+          {
+            "name": "monitor",
+            "in": "query",
+            "required": true,
+            "description": "El monitor específico del que se quiere obtener la información.",
+            "schema": {
+              "type": "string",
+              "example": "bcv"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La información de los monitores de la página.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Conversion"
+                },
+                "example": 123.45
+              }
+            }
+          },
+          "400": {
+            "description": "Error."
+          }
+        }
+      }
+    },
+    "/api/v1/{currency}/history": {
+      "get": {
+        "tags": [
+          "Dólar"
+        ],
+        "summary": "Obtener historial",
+        "description": "Obtiene el historial de precios de un monitor específico en una página.",
+        "operationId": "getHistory",
+        "parameters": [
+          {
+            "name": "currency",
+            "in": "path",
+            "required": true,
+            "description": "La moneda en la que se expresarán los precios (dollar, euro).",
+            "schema": {
+              "type": "string",
+              "example": "dollar"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "description": "La página de la que se quiere obtener la información.",
+            "schema": {
+              "type": "string",
+              "example": "bcv"
+            }
+          },
+          {
+            "name": "monitor",
+            "in": "query",
+            "required": true,
+            "description": "El monitor específico del que se quiere obtener la información.",
+            "schema": {
+              "type": "string",
+              "example": "usd"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "description": "Fecha de inicio del historial.",
+            "schema": {
+              "type": "string",
+              "example": "01-01-2024"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "description": "Fecha de fin del historial.",
+            "schema": {
+              "type": "string",
+              "example": "01-01-2024"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La información de los monitores de la página.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/History"
+                },
+                "example": {
+                  "datetime": "2024-01-01T12:00:00Z",
+                  "history": [
+                    {
+                      "price": 100.0,
+                      "last_update": "2024-01-01T12:00:00Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error."
+          },
+          "404": {
+            "description": "No se pudo encontrar la página que estaba buscando."
+          }
+        }
+      }
+    },
+    "/api/v1/{currency}/changes": {
+      "get": {
+        "tags": [
+          "Dólar"
+        ],
+        "summary": "Obtener cambios",
+        "description": "Obtiene actualizaciones de precios realizadas en un día especifico de un monitor en una página.",
+        "operationId": "getChanges",
+        "parameters": [
+          {
+            "name": "currency",
+            "in": "path",
+            "required": true,
+            "description": "La moneda en la que se expresarán los precios (dollar, euro).",
+            "schema": {
+              "type": "string",
+              "example": "dollar"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "description": "La página de la que se quiere obtener la información.",
+            "schema": {
+              "type": "string",
+              "example": "enparalelovzla"
+            }
+          },
+          {
+            "name": "monitor",
+            "in": "query",
+            "required": true,
+            "description": "El monitor específico del que se quiere obtener la información.",
+            "schema": {
+              "type": "string",
+              "example": "enparalelovzla"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "description": "Fecha de inicio del historial.",
+            "schema": {
+              "type": "string",
+              "example": "01-01-2024"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La información de los monitores de la página.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Changes"
+                },
+                "example": {
+                  "datetime": "2024-01-01T12:00:00Z",
+                  "changes": [
+                    {
+                      "price": 100.0,
+                      "last_update": "2024-01-01T12:00:00Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error."
+          },
+          "404": {
+            "description": "No se pudo encontrar la página que estaba buscando."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "AllMonitors": {
+        "type": "object",
+        "properties": {
+          "datetime": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string",
+                "format": "date"
+              },
+              "time": {
+                "type": "string",
+                "format": "time"
+              }
+            }
+          },
+          "monitors": {
+            "type": "object",
+            "properties": {
+              "change": {
+                "type": "number",
+                "format": "float"
+              },
+              "color": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string",
+                "format": "uri"
+              },
+              "last_update": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "percent": {
+                "type": "number",
+                "format": "float"
+              },
+              "price": {
+                "type": "number",
+                "format": "float"
+              },
+              "price_old": {
+                "type": "number",
+                "format": "float"
+              },
+              "symbol": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+          }
+          }
+        },
+        "example": {
+          "datetime": {
+            "date": "2024-01-01",
+            "time": "12:00:00"
+          },
+          "monitors": {
+            "monitor1": {
+              "change": 1.23,
+              "color": "green",
+              "image": "https://example.com/image.png",
+              "last_update": "2024-01-01T12:00:00Z",
+              "percent": 0.5,
+              "price": 100.0,
+              "price_old": 99.0,
+              "symbol": "$",
+              "title": "Monitor 1"
+            }
+          }
+        }
+      },
+      "Monitor": {
+        "type": "object",
+        "properties": {
+          "change": {
+            "type": "number",
+            "format": "float"
+          },
+          "color": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string",
+            "format": "uri"
+          },
+          "last_update": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "percent": {
+            "type": "number",
+            "format": "float"
+          },
+          "price": {
+            "type": "number",
+            "format": "float"
+          },
+          "price_old": {
+            "type": "number",
+            "format": "float"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "change": 1.23,
+          "color": "green",
+          "image": "https://example.com/image.png",
+          "last_update": "2024-01-01T12:00:00Z",
+          "percent": 0.5,
+          "price": 100.0,
+          "price_old": 99.0,
+          "symbol": "$",
+          "title": "Monitor 1"
+        }
+      },
+      "Conversion": {
+        "type": "number",
+        "format": "float",
+        "example": 123.45
+      },
+      "MonitorData": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number",
+            "format": "float"
+          },
+          "last_update": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "price": 100.0,
+          "last_update": "2024-01-01T12:00:00Z"
+        }
+      },
+      "History": {
+        "type": "object",
+        "properties": {
+          "datetime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitorData"
+            }
+          }
+        },
+        "example": {
+          "datetime": "2024-01-01T12:00:00Z",
+          "history": [
+            {
+              "price": 100.0,
+              "last_update": "2024-01-01T12:00:00Z"
+            }
+          ]
+        }
+      },
+      "Changes": {
+        "type": "object",
+        "properties": {
+          "datetime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "daily": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitorData"
+            }
+          }
+        },
+        "example": {
+          "datetime": "2024-01-01T12:00:00Z",
+          "daily": [
+            {
+              "price": 100.0,
+              "last_update": "2024-01-01T12:00:00Z"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

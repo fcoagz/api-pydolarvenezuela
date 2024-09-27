@@ -215,7 +215,7 @@
             "description": "Fecha de inicio del historial.",
             "schema": {
               "type": "string",
-              "example": "2024-01-01"
+              "example": "01-01-2024"
             }
           },
           {
@@ -225,7 +225,7 @@
             "description": "Fecha de fin del historial.",
             "schema": {
               "type": "string",
-              "example": "2024-01-01"
+              "example": "01-01-2024"
             }
           }
         ],
@@ -309,7 +309,7 @@
             "description": "Fecha de inicio del historial.",
             "schema": {
               "type": "string",
-              "example": "2024-01-01"
+              "example": "01-01-2024"
             }
           }
         ],

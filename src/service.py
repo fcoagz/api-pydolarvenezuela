@@ -4,7 +4,7 @@ from pyDolarVenezuela import getdate, currency_converter
 from .data.schemas import HistoryPriceSchema
 from .cron import monitors
 from .core import cache
-from .utils import providers, providers_dict, currencies_dict
+from .consts import PROVIDERS, CURRENCIES
 
 history_price_schema = HistoryPriceSchema()
 
@@ -32,10 +32,10 @@ def get_all_monitors(currency: str, provider: str) -> Union[Dict[str, Any], Dict
     - currency: Moneda.
     - provider: Proveedor.
     """
-    if currency not in currencies_dict or provider not in providers:
-        raise ValueError(f'No se encontró {'la moneda' if currency not in currencies_dict else 'el proveedor'}.')
+    if currency not in CURRENCIES.keys() or provider not in PROVIDERS.values():
+        raise ValueError(f'No se encontró {'la moneda' if currency not in CURRENCIES else 'el proveedor'}.')
     
-    key = f'{provider}:{currencies_dict.get(currency)}'
+    key = f'{provider}:{CURRENCIES.get(currency)}'
     monitors = cache.get(key)
     monitors_dict = {}
     
@@ -109,8 +109,8 @@ def get_monitor_data(currency: str, page: str, monitor_code: str, start_date: st
     
     if cache.get(key) is None:
         for monitor in monitors:     
-            name_page = providers_dict.get(monitor.provider.name) 
-            currency = currencies_dict.get(currency, currency)  
+            name_page = PROVIDERS.get(monitor.provider.name) 
+            currency = CURRENCIES.get(currency, currency)  
 
             if name_page == page and monitor.currency == currency:
                 results = fetch_monitor_data(monitor, monitor_code, start_date, end_date, data_type)  

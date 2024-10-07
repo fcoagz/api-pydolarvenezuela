@@ -73,14 +73,15 @@ def get_daily_changes(currency: Literal['dollar', 'euro']):
 @token_required
 def value_conversion(currency: Literal['dollar', 'euro']):
     try:
-        type    = request.args.get('type', None)
-        value   = request.args.get('value', None)
-        monitor = request.args.get('monitor', None)
+        type    = request.args.get('type')
+        value   = request.args.get('value')
+        page    = request.args.get('page')
+        monitor = request.args.get('monitor')
 
-        if not all([type, value, monitor]):
+        if not all([type, value, page, monitor]):
             raise ValueError('Por favor, proporciona los parametros: (type, value y monitor).')
         
-        response = get_price_converted(currency, type, value, monitor)
+        response = get_price_converted(currency, type, value, page, monitor)
         return jsonify(response), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 400

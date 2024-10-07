@@ -154,7 +154,7 @@ def get_daily_changes(currency: str, page: str, monitor_code: str, date: str) ->
     """
     return get_monitor_data(currency, page, monitor_code, date, date, 'daily')
 
-def get_price_converted(currency: str, type: str, value, monitor_code: str) -> Union[float, Dict[str, str]]:
+def get_price_converted(currency: str, type: str, value: Union[int, float], page: str, monitor_code: str) -> Union[float, Dict[str, str]]:
     """
     Convierte un valor de una moneda a otra.
 
@@ -162,7 +162,7 @@ def get_price_converted(currency: str, type: str, value, monitor_code: str) -> U
     - type: Tipo de conversión. (VES, USD, EUR).
     - value: Valor a convertir.
     """
-    monitor = get_page_or_monitor(currency, monitor_code=monitor_code)
+    monitor = get_page_or_monitor(currency, page, monitor_code)
     result = currency_converter(type, float(value), monitor)
 
     return result

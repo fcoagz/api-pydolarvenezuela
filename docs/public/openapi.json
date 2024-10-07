@@ -141,13 +141,23 @@
             }
           },
           {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "description": "La página de la que se quiere obtener la información.",
+            "schema": {
+              "type": "string",
+              "example": "bcv"
+            }
+          },
+          {
             "name": "monitor",
             "in": "query",
             "required": true,
             "description": "El monitor específico del que se quiere obtener la información.",
             "schema": {
               "type": "string",
-              "example": "bcv"
+              "example": "usd"
             }
           }
         ],

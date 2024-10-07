@@ -92,7 +92,9 @@ def get_page_or_monitor(currency: str, page: Optional[str] = None, monitor_code:
     result = get_all_monitors(currency, page)
     
     if monitor_code:
-        return _get_monitor(monitor_code, result['monitors'])
+        result = _get_monitor(monitor_code, result['monitors'])
+        if result is None:
+            raise KeyError('No se encontró el monitor que estás buscando.')
     return result
 
 def fetch_monitor_data(monitor: Any, monitor_code: str, start_date: str, end_date: str, data_type: Literal['daily', 'history']) -> List[Dict[str, Any]]:

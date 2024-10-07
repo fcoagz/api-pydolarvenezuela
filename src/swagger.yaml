@@ -74,6 +74,12 @@ paths:
           description: El valor a convertir.
           schema:
             type: number
+        - name: page
+          in: query
+          required: true
+          description: La página de la que se quiere obtener la información.
+          schema:
+            type: string
         - name: monitor
           in: query
           required: true

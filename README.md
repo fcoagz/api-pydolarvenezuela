@@ -91,6 +91,7 @@ Ruta:
 |------------|------|-------------|
 | type       | `string` | Indica el tipo de conversión. Puede ser `VES` o `USD` o `EUR`. |
 | value      | `float or integer` | Indica el valor a convertir. |
+| page       | `string` | Indica el nombre de la página donde deseas obtener su valor. |
 | monitor    | `string` | Indica el monitor específico. |
 
 ## Actividad

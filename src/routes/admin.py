@@ -45,9 +45,9 @@ def delete_page():
 @token_required_admin
 def modificate_monitor():
     try:
-        form = request.form
-        page = form.pop('page')
-        monitor = form.pop('monitor')
+        form = request.form.to_dict()
+        page = form.pop('page', None)
+        monitor = form.pop('monitor', None)
 
         if not all([page, monitor]):
             return jsonify({"error": "No se proporcionaron la página y el monitor."}), 400

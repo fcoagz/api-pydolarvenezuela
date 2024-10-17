@@ -19,11 +19,12 @@ def get_monitor_by_page_or_monitor(currency: Literal['dollar', 'euro']):
         token   = request.headers.get('Authorization')
         page    = request.args.get('page')
         monitor = request.args.get('monitor')
+        format_date = request.args.get('format_date', 'default')
 
         if token and not page:
-            response = get_accurate_monitors(monitor)
+            response = get_accurate_monitors(monitor, format_date)
         else:
-            response = get_page_or_monitor(currency, page, monitor)
+            response = get_page_or_monitor(currency, page, monitor, format_date)
             
         return jsonify(response), 200
     except Exception as e:
@@ -37,6 +38,7 @@ def get_history(currency: Literal['dollar', 'euro']):
         monitor = request.args.get('monitor')
         start_date = request.args.get('start_date')
         end_date   = request.args.get('end_date')
+        format_date = request.args.get('format_date', 'default')
 
         if not all([page, monitor, start_date, end_date]):
             raise ValueError('Por favor, proporciona los parametros: (page, monitor, start_date y end_date).')
@@ -45,7 +47,7 @@ def get_history(currency: Literal['dollar', 'euro']):
             if re.match(r'\d{2}-\d{2}-\d{4}', date) is None:
                 raise ValueError('El formato de la fecha debe ser: dd-mm-yyyy.')
 
-        response = get_history_prices(currency, page, monitor, start_date, end_date)
+        response = get_history_prices(currency, page, monitor, start_date, end_date, format_date)
         return jsonify(response), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 400
@@ -57,6 +59,7 @@ def get_daily_changes(currency: Literal['dollar', 'euro']):
         page = request.args.get('page')
         monitor = request.args.get('monitor')
         date = request.args.get('date')
+        format_date = request.args.get('format_date', 'default')
 
         if not all([page, monitor, date]):
             raise ValueError('Por favor, proporciona los parametros: (page, monitor y date).')
@@ -64,7 +67,7 @@ def get_daily_changes(currency: Literal['dollar', 'euro']):
         if re.match(r'\d{2}-\d{2}-\d{4}', date) is None:
             raise ValueError('El formato de la fecha debe ser: dd-mm-yyyy.')
 
-        response = get_daily_changes_(currency, page, monitor, date)
+        response = get_daily_changes_(currency, page, monitor, date, format_date)
         return jsonify(response), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 400

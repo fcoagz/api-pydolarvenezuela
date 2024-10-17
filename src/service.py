@@ -29,6 +29,7 @@ def get_all_monitors(currency: str, provider: str, format_date: Literal['timesta
 
     - currency: Moneda.
     - provider: Proveedor.
+    - format_date: Formato de fecha.
     """
     if currency not in CURRENCIES.keys() or provider not in PROVIDERS.values():
         raise ValueError(f'No se encontró {'la moneda' if currency not in CURRENCIES else 'el proveedor'}.')
@@ -52,6 +53,7 @@ def get_accurate_monitors(monitor_code: Optional[str], format_date: str) -> Unio
     Obtiene los monitores de las paginas BCV y EnParaleloVzla que estan guardado en caché.
 
     - monitor_code: Key del monitor.
+    - format_date: Formato de fecha.
     """
     default_monitors = ["bcv:usd", "enparalelovzla:usd"]
     monitor_data = {}
@@ -87,6 +89,7 @@ def get_page_or_monitor(currency: str, page: Optional[str], monitor_code: Option
     - currency: Moneda.
     - page: Página.
     - monitor_code: Key del monitor
+    - format_date: Formato de fecha.
     """
     page = 'criptodolar' if page is None else page
     result = get_all_monitors(currency, page, format_date)

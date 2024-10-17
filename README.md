@@ -46,6 +46,9 @@ Ruta:
 |------------|------|-------------|
 | page       | `string` | _Opcional._ Indica el nombre de la página donde deseas obtener su valor. |
 | monitor    | `string` | _Opcional._ Indica el monitor específico. |
+| format_date    | `string` | _Opcional._ Indica el tipo de formato de fecha. (`iso`, `timestamp`, `default`) |
+
+El parámetro `format_date` permite obtener la fecha en diferentes formatos. Por defecto, la fecha se muestra en formato `DD/MM/YYYY,  HH:mm AM/PM`. Si deseas obtener la fecha en formato `ISO` o `timestamp`, puedes especificarlo en el parámetro `format_date`.
 
 ### `GET /api/v1/<currency>/history`
 
@@ -63,6 +66,7 @@ Header:
 | monitor    | `string` | Indica el monitor específico. |
 | start_date    | `string` | Fecha de inicio del historial. `DD-MM-YYYY` |
 | end_date   | `string` | Fecha de fin del historial. `DD-MM-YYYY` |
+| format_date    | `string` | _Opcional._ Indica el tipo de formato de fecha. (`iso`, `timestamp`, `default`) |
 
 ### `GET /api/v1/<currency>/changes`
 
@@ -79,6 +83,7 @@ Header:
 | page       | `string` | Indica el nombre de la página donde deseas obtener su valor. |
 | monitor    | `string` | Indica el monitor específico. |
 | date    | `string` | Fecha de la cual se desea obtener los precios. `DD-MM-YYYY` |
+| format_date    | `string` | _Opcional._ Indica el tipo de formato de fecha. (`iso`, `timestamp`, `default`) |
 
 ### `GET /api/v1/<currency>/conversion`
 

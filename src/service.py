@@ -40,7 +40,7 @@ def get_all_monitors(currency: str, provider: str, format_date: Literal['timesta
     
     if monitors is not None:
         monitors_serialized = MonitorSchema(custom_format=format_date, many=True).dump(monitors)
-        monitors_dict = {data.pop('key'): data for data in monitors_serialized}
+        monitors_dict = {data.pop('key'): data for data in monitors_serialized if data.get('key')}
     
     result = {
         "datetime": getdate(),
@@ -63,7 +63,7 @@ def get_accurate_monitors(monitor_code: Optional[str], format_date: str) -> Unio
         if data is None:
             continue
         monitors_serialized = MonitorSchema(custom_format=format_date, many=True).dump(data)
-        monitors_dict = {data.pop('key'): data for data in monitors_serialized}
+        monitors_dict = {data.pop('key'): data for data in monitors_serialized if data.get('key')}
 
         if 'usd' in monitors_dict:
             monitor_data['bcv'] = monitors_dict['usd']

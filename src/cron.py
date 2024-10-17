@@ -70,9 +70,8 @@ def job() -> None:
             update_data(name, monitor)
             continue
 
-        for day in UPDATE_SCHEDULE.get(name, {}).get('not', []):
-            if _day_ == day:
-                continue
+        if _day_ in UPDATE_SCHEDULE.get(name, {}).get('not', []):
+            continue
 
         for start, end in UPDATE_SCHEDULE.get(name, {}).get('hours', []):
             if _hour_ >= start and _hour_ <= end:

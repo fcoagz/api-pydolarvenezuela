@@ -1,12 +1,10 @@
 import json
 from typing import Union, Optional, Literal, Dict, List, Any
 from pyDolarVenezuela import getdate, currency_converter
-from .data.schemas import HistoryPriceSchema
+from .data.schemas import HistoryPriceSchema, MonitorSchema
 from .cron import monitors
 from .core import cache
 from .consts import PROVIDERS, CURRENCIES
-
-history_price_schema = HistoryPriceSchema()
 
 def _get_cache_key(*args) -> str:
     """
@@ -25,7 +23,7 @@ def _get_monitor(monitor_code: str, monitors_founds: Dict[str, Dict[str, Any]]) 
         return monitors_founds[monitor_code]
     return None
 
-def get_all_monitors(currency: str, provider: str) -> Union[Dict[str, Any], Dict[str, str]]:
+def get_all_monitors(currency: str, provider: str, format_date: Literal['timestamp', 'iso', 'default']) -> Union[Dict[str, Any], Dict[str, str]]:
     """
     Obtiene los monitores de un proveedor que estan guardado en caché.
 
@@ -36,19 +34,20 @@ def get_all_monitors(currency: str, provider: str) -> Union[Dict[str, Any], Dict
         raise ValueError(f'No se encontró {'la moneda' if currency not in CURRENCIES else 'el proveedor'}.')
     
     key = f'{provider}:{CURRENCIES.get(currency)}'
-    monitors = cache.get(key)
-    monitors_dict = {}
+    monitors = json.loads(cache.get(key)) if cache.get(key) else None
+    monitors_dict = None
     
     if monitors is not None:
-        monitors_dict = json.loads(monitors)
+        monitors_serialized = MonitorSchema(custom_format=format_date, many=True).dump(monitors)
+        monitors_dict = {data.pop('key'): data for data in monitors_serialized}
     
     result = {
         "datetime": getdate(),
-        "monitors": monitors_dict
+        "monitors": {} if not monitors_dict else monitors_dict
     }
     return result
 
-def get_accurate_monitors(monitor_code: Optional[str] = None) -> Union[Dict[str, Any], Dict[str, str]]:
+def get_accurate_monitors(monitor_code: Optional[str], format_date: str) -> Union[Dict[str, Any], Dict[str, str]]:
     """
     Obtiene los monitores de las paginas BCV y EnParaleloVzla que estan guardado en caché.
 
@@ -57,16 +56,17 @@ def get_accurate_monitors(monitor_code: Optional[str] = None) -> Union[Dict[str,
     default_monitors = ["bcv:usd", "enparalelovzla:usd"]
     monitor_data = {}
     for key in default_monitors:
-        data = cache.get(key)
+        data = json.loads(cache.get(key)) if cache.get(key) else None
         
         if data is None:
             continue
-        data = json.loads(data)
+        monitors_serialized = MonitorSchema(custom_format=format_date, many=True).dump(data)
+        monitors_dict = {data.pop('key'): data for data in monitors_serialized}
 
-        if 'usd' in data:
-            monitor_data['bcv'] = data['usd']
+        if 'usd' in monitors_dict:
+            monitor_data['bcv'] = monitors_dict['usd']
             continue
-        monitor_data['enparalelovzla'] = data['enparalelovzla']
+        monitor_data['enparalelovzla'] = monitors_dict['enparalelovzla']
     
     if monitor_code:
         result = _get_monitor(monitor_code, monitor_data)
@@ -80,7 +80,7 @@ def get_accurate_monitors(monitor_code: Optional[str] = None) -> Union[Dict[str,
     }
     return result
 
-def get_page_or_monitor(currency: str, page: Optional[str] = None, monitor_code: Optional[str] = None) -> Union[Dict[str, Any], Dict[str, str]]:    
+def get_page_or_monitor(currency: str, page: Optional[str], monitor_code: Optional[str], format_date: str) -> Union[Dict[str, Any], Dict[str, str]]:    
     """
     Obtiene los monitores de una página o un monitor en específico.
 
@@ -89,7 +89,7 @@ def get_page_or_monitor(currency: str, page: Optional[str] = None, monitor_code:
     - monitor_code: Key del monitor
     """
     page = 'criptodolar' if page is None else page
-    result = get_all_monitors(currency, page)
+    result = get_all_monitors(currency, page, format_date)
     
     if monitor_code:
         result = _get_monitor(monitor_code, result['monitors'])
@@ -103,7 +103,7 @@ def fetch_monitor_data(monitor: Any, monitor_code: str, start_date: str, end_dat
     elif data_type == 'daily':
         return monitor.get_daily_price_monitor(monitor_code, start_date)
 
-def get_monitor_data(currency: str, page: str, monitor_code: str, start_date: str, end_date: str, data_type: Literal['daily', 'history']) -> List[Dict[str, Any]]:
+def get_monitor_data(currency: str, page: str, monitor_code: str, start_date: str, end_date: str, data_type: Literal['daily', 'history'], format_date: Literal['timestamp', 'iso', 'default']) -> List[Dict[str, Any]]:
     """
     Obtiene el historial de precios de un monitor.
     """
@@ -119,21 +119,21 @@ def get_monitor_data(currency: str, page: str, monitor_code: str, start_date: st
                 
                 if not results:
                     raise ValueError('No se encontraron datos para el monitor solicitado.')
-                
-                results_dict = history_price_schema.dump(results, many=True)
-                cache.set(key, json.dumps(results_dict), ex=1800)
+
+                cache.set(key, json.dumps([r.__dict__ for r in results], default=str), ex=1800)
                 break
         else:
             raise KeyError('No se encontró el monitor al que quieres acceder.')
     
     data = json.loads(cache.get(key))
+    schema = HistoryPriceSchema(custom_format=format_date, many=True).dump(data)
     results = {
         'datetime': getdate(),
-        data_type: data
+        data_type: schema
     }
     return results       
 
-def get_history_prices(currency: str, page: str, monitor_code: str, start_date: str, end_date: str) -> Union[Dict[str, Any], Dict[str, str]]:
+def get_history_prices(currency: str, page: str, monitor_code: str, start_date: str, end_date: str, format_date: str) -> Union[Dict[str, Any], Dict[str, str]]:
     """
     Obtiene el historial de precios de un monitor.
 
@@ -143,9 +143,9 @@ def get_history_prices(currency: str, page: str, monitor_code: str, start_date: 
     - start_date: Fecha de inicio.
     - end_date: Fecha de finalización.
     """
-    return get_monitor_data(currency, page, monitor_code, start_date, end_date, 'history')
+    return get_monitor_data(currency, page, monitor_code, start_date, end_date, 'history', format_date)
 
-def get_daily_changes(currency: str, page: str, monitor_code: str, date: str) -> Union[Dict[str, Any], Dict[str, str]]:
+def get_daily_changes(currency: str, page: str, monitor_code: str, date: str, format_date: str) -> Union[Dict[str, Any], Dict[str, str]]:
     """
     Obtiene los cambios diarios de un monitor.
 
@@ -154,7 +154,7 @@ def get_daily_changes(currency: str, page: str, monitor_code: str, date: str) ->
     - monitor_code: Key del monitor.
     - date: Fecha.
     """
-    return get_monitor_data(currency, page, monitor_code, date, date, 'daily')
+    return get_monitor_data(currency, page, monitor_code, date, date, 'daily', format_date)
 
 def get_price_converted(currency: str, type: str, value: Union[int, float], page: str, monitor_code: str) -> Union[float, Dict[str, str]]:
     """

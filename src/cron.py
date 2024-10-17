@@ -9,7 +9,6 @@ from pyDolarVenezuela.pages import (
     Italcambio
 )
 from pyDolarVenezuela import Monitor, Database, CheckVersion
-from .data.schemas import MonitorSchema
 from .core import logger
 from .core import cache
 from .consts import (
@@ -25,7 +24,6 @@ from .consts import (
     UPDATE_SCHEDULE
 )
 
-monitor_schema = MonitorSchema()
 CheckVersion.check = False
 
 pages    = [AlCambio, BCV, CriptoDolar, DolarToday, EnParaleloVzla, Italcambio]
@@ -41,9 +39,8 @@ def update_data(name: str, monitor: Monitor) -> None:
     - monitor: Instancia de Monitor.
     """
     try:
-        monitors = monitor_schema.dump(monitor.get_all_monitors(), many=True)
-        monitors_dict = {data.pop('key'): data for data in monitors}
-        cache.set(f'{name}:{monitor.currency}', json.dumps(monitors_dict))
+        cache.set(f'{name}:{monitor.currency}', json.dumps(
+            [m.__dict__ for m in monitor.get_all_monitors()], default=str))
     except Exception as e:
         logger.warning(f'Error al obtener datos de {monitor.provider.name}: {str(e)}')
 
@@ -73,9 +70,8 @@ def job() -> None:
             update_data(name, monitor)
             continue
 
-        for day in UPDATE_SCHEDULE.get(name, {}).get('not', []):
-            if _day_ == day:
-                continue
+        if _day_ in UPDATE_SCHEDULE.get(name, {}).get('not', []):
+            continue
 
         for start, end in UPDATE_SCHEDULE.get(name, {}).get('hours', []):
             if _hour_ >= start and _hour_ <= end:

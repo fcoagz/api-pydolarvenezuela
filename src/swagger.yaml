@@ -39,6 +39,13 @@ paths:
           schema:
             type: string
             default: null
+        - name: format_date
+          in: query
+          required: false
+          description: Convertir un formato de fecha específico. (`iso`, `timestamp`, `default`).
+          schema:
+            type: string
+            default: default
       responses:
         200:
           description: La información de los monitores de la página.
@@ -119,6 +126,13 @@ paths:
           description: El monitor específico del que se quiere obtener la información.
           schema:
             type: string
+        - name: format_date
+          in: query
+          required: false
+          description: Convertir un formato de fecha específico. (`iso`, `timestamp`, `default`).
+          schema:
+            type: string
+            default: default
         - name: start_date
           in: query
           required: true
@@ -168,6 +182,13 @@ paths:
           description: El monitor específico del que se quiere obtener la información.
           schema:
             type: string
+        - name: format_date
+          in: query
+          required: false
+          description: Convertir un formato de fecha específico. (`iso`, `timestamp`, `default`).
+          schema:
+            type: string
+            default: default
         - name: date
           in: query
           required: true

@@ -60,6 +60,16 @@
               "type": "string",
               "default": null
             }
+          },
+          {
+            "name": "format_date",
+            "in": "query",
+            "required": false,
+            "description": "Convertir un formato de fecha específico. (`iso`, `timestamp`, `default`).",
+            "schema": {
+              "type": "string",
+              "default": "default"
+            }
           }
         ],
         "responses": {
@@ -219,6 +229,16 @@
             }
           },
           {
+            "name": "format_date",
+            "in": "query",
+            "required": false,
+            "description": "Convertir un formato de fecha específico. (`iso`, `timestamp`, `default`).",
+            "schema": {
+              "type": "string",
+              "default": "default"
+            }
+          },
+          {
             "name": "start_date",
             "in": "query",
             "required": true,
@@ -310,6 +330,16 @@
             "schema": {
               "type": "string",
               "example": "enparalelovzla"
+            }
+          },
+          {
+            "name": "format_date",
+            "in": "query",
+            "required": false,
+            "description": "Convertir un formato de fecha específico. (`iso`, `timestamp`, `default`).",
+            "schema": {
+              "type": "string",
+              "default": "default"
             }
           },
           {

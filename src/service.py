@@ -167,7 +167,7 @@ def get_price_converted(currency: str, type: str, value: Union[int, float], page
     - type: Tipo de conversión. (VES, USD, EUR).
     - value: Valor a convertir.
     """
-    monitor = get_page_or_monitor(currency, page, monitor_code)
+    monitor = get_page_or_monitor(currency, page, monitor_code, 'default')
     result = currency_converter(type, float(value), monitor)
 
     return result
